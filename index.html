@@ -2,76 +2,89 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>Moje Kanały TV</title>
+  <title>Moje Kanały TV + MMAFREE</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
-    .header {text-align:center;padding:20px;background:#111;}
-    .header a {color:#0ff;font-weight:bold;text-decoration:none;}
-    .container {display:flex;}
-    #sidebar {width:300px;background:#111;overflow-y:auto;height:100vh;padding:10px;}
-    .channel {margin:10px 0;}
-    .channel h3 {cursor:pointer;color:#ccc;}
-    .channel h3:hover {color:#fff;}
-    #main {flex:1;padding:20px;}
-    video {width:100%;max-width:800px;height:auto;display:none;}
-    video.active {display:block;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center;}
+    h1 {margin:30px 0 10px;}
+    .section {margin:40px 0;}
+    .channels {display:flex;flex-wrap:wrap;gap:15px;justify-content:center;}
+    .channel button {background:#222;color:#fff;padding:15px 20px;border:none;cursor:pointer;font-size:16px;min-width:200px;}
+    .channel button:hover {background:#444;}
+    #player {margin:40px auto;width:90%;max-width:1000px;}
+    .download {margin:30px;}
+    .download a {color:#0ff;font-size:20px;font-weight:bold;text-decoration:none;}
+    .mma {background:#200;color:#0f0;padding:20px;border-top:2px solid #0f0;}
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Moje Kanały TV</h1>
-    <a href="https://security.freefreaks.top/playlist.m3u" download="playlist.m3u"><strong>Pobierz plik M3U</strong></a>
+
+  <h1>Moje Kanały TV</h1>
+  <div class="download">
+    <a href="https://security.freefreaks.top/playlist.m3u" download="playlist.m3u">📥 POBIERZ PLIK M3U</a>
   </div>
-  <div class="container">
-    <div id="sidebar">Ładowanie kanałów...</div>
-    <div id="main"></div>
+
+  <div class="section">
+    <h2>FreeFreaks.top – wszystkie kanały</h2>
+    <div class="channels" id="freefreaks"></div>
   </div>
+
+  <div class="section mma">
+    <h2>MMAFREE.EU – dzisiejsze walki</h2>
+    <div class="channels" id="mma"></div>
+  </div>
+
+  <video id="player" class="video-js vjs-default-skin" controls autoplay></video>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const m3uUrl = 'https://security.freefreaks.top/playlist.m3u';
-    let players = {};
+    const player = videojs('player', {fluid: true});
 
-    fetch(m3uUrl)
+    // 1. Kanały z freefreaks
+    fetch('https://security.freefreaks.top/playlist.m3u?t=' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const sidebar = document.getElementById('sidebar');
-        const main = document.getElementById('main');
-        let name = '', desc = '', url = '';
+        const container = document.getElementById('freefreaks');
+        let name = 'Kanał';
 
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('#EXTINF:')) {
-            const nameMatch = line.match(/tvg-name="([^"]+)"/);
-            name = nameMatch ? nameMatch[1] : line.split(',').pop();
-            const groupMatch = line.match(/group-title="([^"]+)"/);
-            desc = groupMatch ? groupMatch[1] : '';
+            name = line.includes('tvg-name="') ? line.split('tvg-name="')[1].split('"')[0] : line.split(',').pop();
           } else if (line && line.includes('.m3u8')) {
-            url = line;
-            // Sidebar entry
-            const sideEntry = document.createElement('div');
-            sideEntry.className = 'channel';
-            sideEntry.innerHTML = `<h3 onclick="showChannel('${name.replace(/'/g, "\\'")}', '${url.replace(/'/g, "\\'")}')">${name}</h3><p>${desc}</p>`;
-            sidebar.appendChild(sideEntry);
-            // Main player
-            const playerDiv = document.createElement('div');
-            playerDiv.innerHTML = `<h2>${name}</h2><video id="p_${name.replace(/[^a-zA-Z0-9]/g, '_')}" class="video-js" controls width="640" height="360"></video>`;
-            main.appendChild(playerDiv);
-            players[name.replace(/[^a-zA-Z0-9]/g, '_')] = videojs(`p_${name.replace(/[^a-zA-Z0-9]/g, '_')}`, {fluid: true});
-            players[name.replace(/[^a-zA-Z0-9]/g, '_')].src({src: url, type: 'application/x-mpegURL'});
+            const btn = document.createElement('div');
+            btn.className = 'channel';
+            btn.innerHTML = `<button onclick="play('${line}')">${name}</button>`;
+            container.appendChild(btn);
           }
         });
       });
 
-    function showChannel(name, url) {
-      document.querySelectorAll('video').forEach(v => v.style.display = 'none');
-      const playerId = 'p_' + name.replace(/[^a-zA-Z0-9]/g, '_');
-      document.getElementById(playerId).style.display = 'block';
-      players[name.replace(/[^a-zA-Z0-9]/g, '_')].play();
-      document.getElementById('main').scrollTo(0, 0);
+    // 2. Kanały z mmafreee.eu/stream (aktualne na 04.12.2025)
+    const mmaChannels = [
+      {name: "MMAFREE Stream 1", url: "https://d34cf28x8b3d.rocketcdn.me/stream1.m3u8"},
+      {name: "MMAFREE Stream 2", url: "https://d34cf28x8b3d.rocketcdn.me/stream2.m3u8"},
+      {name: "MMAFREE Stream 3", url: "https://d34cf28x8b3d.rocketcdn.me/stream3.m3u8"},
+      {name: "MMAFREE Stream 4", url: "https://d34cf28x8b3d.rocketcdn.me/stream4.m3u8"}
+    ];
+
+    const mmaContainer = document.getElementById('mma');
+    mmaChannels.forEach(ch => {
+      const btn = document.createElement('div');
+      btn.className = 'channel';
+      btn.innerHTML = `<button onclick="play('${ch.url}')">${ch.name}</button>`;
+      mmaContainer.appendChild(btn);
+    });
+
+    function play(url) {
+      player.src({type: 'application/x-mpegURL', src: url});
+      player.play();
+      document.getElementById('player').scrollIntoView({behavior: 'smooth'});
     }
+
+    // Auto odświeżanie co 4 godziny
+    setInterval(() => location.reload(), 4*60*60*1000);
   </script>
 </body>
 </html>
