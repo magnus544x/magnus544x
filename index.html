@@ -1,48 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
+  <meta charset="utf-8">
   <title>Moje Kanały TV</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
-    body{background:#000;color:#fff;font-family:Arial;text-align:center;}
-    #channels button{margin:8px;padding:12px;font-size:16px;background:#222;border:1px solid #555;cursor:pointer;}
-    #channels button:hover{background:#444;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center;}
+    h1 {margin-bottom:20px;}
+    #channels {
+      display:inline-block;
+      background:#111;
+      padding:15px;
+      border:1px solid #444;
+      max-height:600px;
+      overflow-y:auto;
+      text-align:left;
+      min-width:300px;
+    }
+    #channels button {
+      display:block;
+      width:100%;
+      padding:12px;
+      margin:5px 0;
+      background:#222;
+      border:none;
+      color:#fff;
+      cursor:pointer;
+      font-size:15px;
+    }
+    #channels button:hover {background:#444;}
+    .container {display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:flex-start;}
+    video {max-width:100%;}
   </style>
 </head>
 <body>
   <h1>Moje Kanały TV</h1>
-  <div id="channels"></div>
-  <br>
-  <video id="player" class="video-js vjs-default-skin" controls width="900" height="506"></video>
+  <div class="container">
+    <div id="channels">Ładowanie kanałów...</div>
+    <video id="player" class="video-js vjs-default-skin" controls preload="auto" width="900" height="506"></video>
+  </div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const source = 'https://api.allorigins.win/raw?url=https://security.freefreaks.top/playlist.m3u';
-    let player = videojs('player');
+    const proxy = 'https://corsproxy.io/?';
+    const m3uUrl = proxy + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
+    let player = videojs('player', {fluid: true});
 
     function loadPlaylist() {
-      fetch(source + '?t=' + Date.now())
+      document.getElementById('channels').innerHTML = '<button onclick="loadPlaylist()">🔄 Odśwież listę</button><br><br>Ładowanie...';
+      fetch(m3uUrl + '&t=' + Date.now())
         .then(r => r.text())
         .then(text => {
           const lines = text.split('\n');
           const div = document.getElementById('channels');
           div.innerHTML = '<button onclick="loadPlaylist()">🔄 Odśwież listę</button><br><br>';
           let name = 'Nieznany';
+          let count = 0;
+
           for (let line of lines) {
+            line = line.trim();
             if (line.startsWith('#EXTINF:')) {
-              name = line.split('tvg-name="')[1]?.split('"')[0] || line.split(',').pop().trim();
-            } else if (line.trim() && line.includes('.m3u8')) {
-              let btn = document.createElement('button');
+              const match = line.match(/tvg-name="([^"]+)"/);
+              name = match ? match[1] : line.split(',').pop();
+            } else if (line && line.includes('.m3u8')) {
+              const btn = document.createElement('button');
               btn.textContent = name;
-              btn.onclick = () => player.src({src: line.trim(), type: 'application/x-mpegURL'});
+              btn.onclick = () => {
+                player.src({src: line, type: 'application/x-mpegURL'});
+                player.ready(() => player.play());
+              };
               div.appendChild(btn);
+              count++;
             }
           }
+          if (count === 0) div.innerHTML += '<p>Brak kanałów – spróbuj później.</p>';
+        })
+        .catch(err => {
+          document.getElementById('channels').innerHTML += '<p style="color:red;">Błąd: ' + err + '</p>';
         });
     }
 
     loadPlaylist();
-    setInterval(loadPlaylist, 4*60*60*1000); // co 4h
+    setInterval(loadPlaylist, 4 * 60 * 60 * 1000); // co 4 godziny
   </script>
 </body>
 </html>
