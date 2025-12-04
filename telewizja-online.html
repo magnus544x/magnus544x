@@ -2,39 +2,80 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE</title>
+  <title>TELEWIZJA ONLINE – ODTWARZACZ IPTV</title>
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:40px 0;}
-    .container {max-width:1400px;margin:auto;background:rgba(0,0,0,0.6);border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.7);}
-    h1 {font-size:48px;text-align:center;margin:0 0 30px;background:linear-gradient(to right,#ff2d95,#ff0080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .back {text-align:center;margin:40px 0;}
-    .back a {color:#0ff;font-size:24px;text-decoration:none;}
-    .extra-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;margin-top:40px;}
-    button {
-      background:linear-gradient(145deg,#ff2d95,#ff0080);color:#fff;padding:25px;font-size:22px;border:none;border-radius:18px;
-      cursor:pointer;box-shadow:0 0 25px #ff2d95;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:15px;height:100%;
-    }
-    button:hover {background:#ff0080;transform:scale(1.08);box-shadow:0 0 40px #ff2d95;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
+    .header {text-align:center;padding:30px;background:#111;}
+    .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header a {color:#0ff;font-size:22px;text-decoration:none;}
+    .player-container {width:95%;max-width:1200px;margin:30px auto;}
+    #iptv-player {width:100%;height:70vh;background:#000;}
+    .channel-list {margin-top:20px;text-align:center;}
+    .channel-list button {background:#222;color:#fff;padding:12px 20px;margin:5px;border:none;border-radius:8px;cursor:pointer;font-size:16px;}
+    .channel-list button:hover {background:#0f0;color:#000;}
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE</h1>
-    <div class="back">
-      <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
-    </div>
-
-    <div class="extra-grid">
-      <!-- Wszystkie kanały A-Z (to samo co wcześniej) -->
-      <div><button onclick="window.open('https://security.freefreaks.top/player.php?id=turbomaniak_tvhd','_blank')"><i class="fas fa-car"></i> TVN TURBO</button></div>
-      <div><button onclick="window.open('https://mmafreee.eu/stream/history.html','_blank')"><i class="fas fa-history"></i> HISTORY</button></div>
-      <div><button onclick="window.open('https://mmafreee.eu/stream/history2.html','_blank')"><i class="fas fa-history"></i> HISTORY 2</button></div>
-      <!-- ... wklej tutaj całą resztę kanałów z poprzedniej listy (od ARCHIWUM X do ZOOM TV) ... -->
-      <div><button onclick="window.open('https://mmafreee.eu/stream/zoomtv.html','_blank')"><i class="fas fa-search"></i> ZOOM TV</button></div>
-    </div>
+  <div class="header">
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
+    <p>Odtwarzacz automatycznie ładuje ponad 150 kanałów z Twojej playlisty</p>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
+
+  <div class="player-container">
+    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'></video>
+  </div>
+
+  <div class="channel-list" id="channels"></div>
+
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script>
+    const playlistUrl = 'https://security.freefreaks.top/playlist.m3u';
+    const player = videojs('iptv-player', {fluid: true, liveui: true});
+
+    fetch(playlistUrl + '?t=' + Date.now())
+      .then(r => r.text())
+      .then(text => {
+        const lines = text.split('\n');
+        const channelDiv = document.getElementById('channels');
+        let currentUrl = '';
+        let currentName = 'Nieznany kanał';
+
+        lines.forEach(line => {
+          line = line.trim();
+          if (line.startsWith('#EXTINF:')) {
+            const match = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
+            currentName = match ? match[1] : 'Kanał bez nazwy';
+          } else if (line && line.includes('.m3u8')) {
+            currentUrl = line;
+            const btn = document.createElement('button');
+            btn.textContent = currentName;
+            btn.onclick = () => {
+              player.src({type: 'application/x-mpegURL', src: currentUrl});
+              player.ready(() => player.play());
+              document.querySelectorAll('.channel-list button').forEach(b => b.style.background = '#222');
+              btn.style.background = '#0f0';
+              btn.style.color = '#000';
+            };
+            channelDiv.appendChild(btn);
+
+            // Automatycznie odtwórz pierwszy kanał
+            if (!player.src()) {
+              player.src({type: 'application/x-mpegURL', src: currentUrl});
+              player.ready(() => player.play());
+              btn.style.background = '#0f0';
+              btn.style.color = '#000';
+            }
+          }
+        });
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red;text-align:center;">Błąd ładowania playlisty: ${err}</p>`;
+      });
+  </script>
 
 </body>
 </html>
