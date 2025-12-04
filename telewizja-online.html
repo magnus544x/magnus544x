@@ -2,87 +2,39 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – DZIAŁA 100%</title>
+  <title>TELEWIZJA ONLINE – JW PLAYER + DVR</title>
+  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;overflow:hidden;}
+    body {margin:0;background:#000;color:#fff;font-family:Arial;overflow:hidden;}
     .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
-    .header h1 {font-size:32px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .header a {color:#0ff;font-size:18px;text-decoration:none;}
-    #player {width:100vw;height:100vh;}
-    .channels {position:fixed;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.9);padding:10px 0;overflow-x:auto;z-index:1000;display:flex;gap:10px;justify-content:flex-start;}
-    .channels button {background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;min-width:160px;white-space:nowrap;}
-    .channels button:hover {background:#0f0;color:#000;}
-    .channels button.active {background:#0f0;color:#000;font-weight:bold;}
+    .header h1 {font-size:36px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header a {color:#0ff;font-size:20px;text-decoration:none;}
+    #jwplayer {width:100vw;height:100vh;}
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
-    <a href="index.html"><i class="fas fa-home"></i> Strona główna</a>
+    <a href="index.html"><i class="fas fa-home"></i> Powrót do strony głównej</a>
   </div>
 
-  <video id="player" controls autoplay playsinline></video>
+  <div id="jwplayer"></div>
 
-  <div class="channels" id="channels">Ładowanie kanałów...</div>
-
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script>
-    const video = document.getElementById('player');
-    let hls;
-
-    function play(url) {
-      if (hls) hls.destroy();
-
-      if (Hls.isSupported()) {
-        hls = new Hls({enableWorker: true, lowLatencyMode: true});
-        hls.loadSource(url);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-      } else if (video.canPlayType('application/x-mpegURL')) {
-        video.src = url;
-        video.play();
-      }
-    }
-
-    // Ładujemy z Twojego pliku w repozytorium – 100% działa
-    fetch('playlist.m3u?' + Date.now())
-      .then(r => r.text())
-      .then(text => {
-        const lines = text.split('\n');
-        const div = document.getElementById('channels');
-        div.innerHTML = '';
-
-        let url = '';
-        let name = 'Kanał';
-        let first = true;
-
-        lines.forEach(line => {
-          line = line.trim();
-          if (line.startsWith('#EXTINF:')) {
-            const m = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-            name = m ? m[1].trim() : 'Kanał';
-          } else if (line && line.includes('.m3u8')) {
-            url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
-
-            const btn = document.createElement('button');
-            btn.textContent = name;
-            btn.onclick = () => {
-              document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-              btn.classList.add('active');
-              play(url);
-            };
-            div.appendChild(btn);
-
-            if (first) {
-              btn.classList.add('active');
-              play(url);
-              first = false;
-            }
-          }
-        });
-      });
+    jwplayer("jwplayer").setup({
+      playlist: "playlist.m3u",           // ← Twój plik z repozytorium GitHub!
+      width: "100%",
+      height: "100%",
+      autostart: true,
+      stretching: "uniform",
+      displaytitle: true,
+      displaydescription: true,
+      abouttext: "DARMOWE TV",
+      aboutlink: "https://moje-kanaly.vercel.app"
+    });
   </script>
+
 </body>
 </html>
