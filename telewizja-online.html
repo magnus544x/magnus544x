@@ -2,127 +2,78 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>MEGA TEST 6 PLAYERÓW IPTV</title>
+  <title>MEGA TEST – 150+ KANAŁÓW OSOBNO</title>
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
-    h1 {text-align:center;color:#0f0;font-size:40px;}
-    .player-box {margin:40px 0;padding:20px;background:#111;border:2px solid #333;border-radius:15px;}
-    .player-box h2 {color:#ff2d95;margin:0 0 20px;text-align:center;}
-    .player {width:100%;height:500px;background:#000;border-radius:10px;overflow:hidden;}
-    .status {text-align:center;margin-top:10px;font-size:18px;}
+    h1 {text-align:center;color:#0f0;font-size:50px;margin:30px 0;}
+    .channel {margin:30px 0;background:#111;padding:20px;border-radius:15px;text-align:center;}
+    .channel h2 {color:#ff2d95;margin:0 0 15px;font-size:24px;}
+    .player {width:100%;max-width:1000px;height:500px;margin:0 auto;background:#000;border-radius:10px;overflow:hidden;}
+    .status {margin-top:10px;font-size:18px;}
     .ok {color:#0f0;}
     .fail {color:#f00;}
   </style>
 </head>
 <body>
 
-<h1>MEGA TEST – 6 PLAYERÓW IPTV Z TWOJEGO GITHUB</h1>
-<p style="text-align:center;">Playlista: <strong>playlist.m3u</strong> z Twojego repozytorium</p>
+<h1>MEGA TEST – 150+ KANAŁÓW OSOBNO Z GITHUB</h1>
+<p style="text-align:center;font-size:22px;">Każdy kanał ma swój player – zobacz, które działają!</p>
+<a href="index.html" style="display:block;text-align:center;color:#0ff;font-size:20px;margin:20px;">← Powrót do strony głównej</a>
 
-<!-- PLAYER 1 – JW Player (najczęściej działa) -->
-<div class="player-box">
-  <h2>1. JW Player 8 + DVR (najlepszy)</h2>
-  <div id="jw1" class="player"></div>
-  <div class="status" id="status1">Ładowanie...</div>
-</div>
+<div id="channels"></div>
 
-<!-- PLAYER 2 – Flussonic (bardzo stabilny) -->
-<div class="player-box">
-  <h2>2. Flussonic Web Player</h2>
-  <div id="flus" class="player"></div>
-  <div class="status" id="status2">Ładowanie...</div>
-</div>
-
-<!-- PLAYER 3 – Video.js + hls.js -->
-<div class="player-box">
-  <h2>3. Video.js + hls.js</h2>
-  <video id="vjs" class="player" controls></video>
-  <div class="status" id="status3">Ładowanie...</div>
-</div>
-
-<!-- PLAYER 4 – Plyr -->
-<div class="player-box">
-  <h2>4. Plyr (nowoczesny)</h2>
-  <video id="plyr" class="player" controls playsinline></video>
-  <div class="status" id="status4">Ładowanie...</div>
-</div>
-
-<!-- PLAYER 5 – HLS.js czysty -->
-<div class="player-box">
-  <h2>5. HLS.js (minimalny)</h2>
-  <video id="hlsjs" class="player" controls autoplay></video>
-  <div class="status" id="status5">Ładowanie...</div>
-</div>
-
-<!-- PLAYER 6 – HTML5 fallback -->
-<div class="player-box">
-  <h2>6. HTML5 Video (fallback)</h2>
-  <video id="html5" class="player" controls autoplay>
-    <source src="playlist.m3u" type="application/x-mpegURL">
-  </video>
-  <div class="status" id="status6">Ładowanie...</div>
-</div>
-
-<script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
-<script src="https://flussonic.com/public/player/v2/player.js"></script>
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
-<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
-  const m3u = 'playlist.m3u?' + Date.now();
+  fetch('playlist.m3u?' + Date.now())
+    .then(r => r.text())
+    .then(text => {
+      const lines = text.split('\n');
+      const container = document.getElementById('channels');
+      let url = '';
+      let name = 'Kanał';
+      let id = 0;
 
-  // 1. JW Player
-  try {
-    jwplayer("jw1").setup({playlist: m3u, width: "100%", height: "100%", autostart: true});
-    document.getElementById('status1').innerHTML = '<span class="ok">DZIAŁA!</span>';
-  } catch(e) { document.getElementById('status1').innerHTML = '<span class="fail">Błąd</span>'; }
+      lines.forEach(line => {
+        line = line.trim();
+        if (line.startsWith('#EXTINF:')) {
+          const match = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
+          name = match ? match[1].trim() : 'Kanał bez nazwy';
+        } else if (line && line.includes('.m3u8')) {
+          id++;
+          url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
 
-  // 2. Flussonic
-  try {
-    new FlussonicPlayer("#flus", {url: m3u, autoplay: true});
-    document.getElementById('status2').innerHTML = '<span class="ok">DZIAŁA!</span>';
-  } catch(e) { document.getElementById('status2').innerHTML = '<span class="fail">Błąd</span>'; }
+          const div = document.createElement('div');
+          div.className = 'channel';
+          div.innerHTML = `
+            <h2>${id}. ${name}</h2>
+            <video id="player${id}" class="video-js player" controls preload="none"></video>
+            <div class="status" id="status${id}">Ładowanie...</div>
+          `;
+          container.appendChild(div);
 
-  // 3. Video.js
-  try {
-    const vjs = videojs('vjs', {fluid: true, liveui: true});
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(m3u);
-      hls.attachMedia(vjs.tech_.el_);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => vjs.play());
-    }
-    document.getElementById('status3').innerHTML = '<span class="ok">DZIAŁA!</span>';
-  } catch(e) { document.getElementById('status3').innerHTML = '<span class="fail">Błąd</span>'; }
+          const player = videojs(`player${id}`, {fluid: true, liveui: true});
 
-  // 4. Plyr
-  try {
-    const plyr = new Plyr('#plyr', {autoplay: true});
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(m3u);
-      hls.attachMedia(plyr.media);
-    }
-    document.getElementById('status4').innerHTML = '<span class="ok">DZIAŁA!</span>';
-  } catch(e) { document.getElementById('status4').innerHTML = '<span class="fail">Błąd</span>'; }
-
-  // 5. HLS.js czysty
-  try {
-    const video = document.getElementById('hlsjs');
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(m3u);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-    }
-    document.getElementById('status5').innerHTML = '<span class="ok">DZIAŁA!</span>';
-  } catch(e) { document.getElementById('status5').innerHTML = '<span class="fail">Błąd</span>'; }
-
-  // 6. HTML5 fallback
-  setTimeout(() => {
-    document.getElementById('status6').innerHTML = '<span class="ok">Jeśli widzisz obraz – działa!</span>';
-  }, 5000);
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(url);
+            hls.attachMedia(player.tech_.el_);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+              player.play();
+              document.getElementById(`status${id}`).innerHTML = '<span class="ok">DZIAŁA! Obraz + dźwięk</span>';
+            });
+            hls.on(Hls.Events.ERROR, () => {
+              document.getElementById(`status${id}`).innerHTML = '<span class="fail">Błąd streamu</span>';
+            });
+          } else {
+            player.src({type: 'application/x-mpegURL', src: url});
+            player.ready(() => player.play());
+            document.getElementById(`status${id}`).innerHTML = '<span class="ok">DZIAŁA (natywnie)</span>';
+          }
+        }
+      });
+    });
 </script>
 
 </body>
