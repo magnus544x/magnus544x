@@ -2,13 +2,13 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – NA ŻYWO</title>
+  <title>TELEWIZJA ONLINE – DZIAŁA 100%</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
     .header {text-align:center;padding:30px;background:#111;}
-    .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:22px;text-decoration:none;}
     .player-container {width:95%;max-width:1300px;margin:30px auto;}
     #iptv-player {width:100%;height:75vh;background:#000;}
@@ -23,44 +23,54 @@
 <body>
 
   <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
-    <p>150+ kanałów – działa od razu, obraz i dźwięk</p>
-    <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót</a>
   </div>
 
   <div class="player-container">
-    <video id="iptv-player" class="video-js vjs-default-skin" controls autoplay muted></video>
+    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="none"></video>
   </div>
 
   <div class="channel-list" id="channels">Ładowanie kanałów...</div>
 
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const player = videojs('iptv-player', {
       fluid: true,
       responsive: true,
-      liveui: true,
+      controls: true,
       autoplay: true,
-      muted: false,
-      html5: {
-        vhs: {
-          overrideNative: true,
-          withCredentials: false
-        }
-      }
+      preload: 'auto'
     });
 
-    // Najlepsze: wrzuć swój plik playlist.m3u do repozytorium
-    const local = 'playlist.m3u';
-    const remote = 'https://corsproxy.io/?' + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
+    let hls;
 
-    fetch(local + '?t=' + Date.now())
-      .then(r => r.ok ? r.text() : fetch(remote).then(r => r.text()))
+    function play(url) {
+      if (hls) hls.destroy();
+
+      if (Hls.isSupported()) {
+        hls = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          backBufferLength: 90
+        });
+        hls.loadSource(url);
+        hls.attachMedia(player.tech_.el_);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
+      } else {
+        player.src({type: 'application/x-mpegURL', src: url});
+        player.ready(() => player.play());
+      }
+    }
+
+    // Pobieramy playlistę przez proxy (działa 100%)
+    fetch('https://corsproxy.io/?' + encodeURIComponent('https://security.freefreaks.top/playlist.m3u') + '&t=' + Date.now())
+      .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const channelDiv = document.getElementById('channels');
-        channelDiv.innerHTML = '';
+        const div = document.getElementById('channels');
+        div.innerHTML = '';
 
         let url = '';
         let name = 'Kanał';
@@ -69,40 +79,31 @@
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('#EXTINF:')) {
-            const match = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-            name = match ? match[1].trim() : 'Kanał';
+            const m = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
+            name = m ? m[1].trim() : 'Kanał';
           } else if (line && line.includes('.m3u8')) {
             url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
 
             const btn = document.createElement('button');
             btn.textContent = name;
-            btn.onclick = () => play(url, btn);
-            channelDiv.appendChild(btn);
+            btn.onclick = () => {
+              document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              play(url);
+            };
+            div.appendChild(btn);
 
             if (first) {
-              play(url, btn);
+              btn.classList.add('active');
+              play(url);
               first = false;
             }
           }
         });
+      })
+      .catch(() => {
+        document.getElementById('channels').innerHTML = '<p style="color:red;">Błąd – odśwież stronę</p>';
       });
-
-    function play(url, btn) {
-      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      if (Hls.isSupported()) {
-        const hls = new Hls({enableWorker: true, lowLatencyMode: true});
-        hls.loadSource(url);
-        hls.attachMedia(player.tech_.el_);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          player.play();
-        });
-      } else if (player.tech_.el_.canPlayType('application/x-mpegURL')) {
-        player.src({type: 'application/x-mpegURL', src: url});
-        player.play();
-      }
-    }
   </script>
 </body>
 </html>
