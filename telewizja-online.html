@@ -2,18 +2,16 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – DZIAŁA 100%</title>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <title>TELEWIZJA ONLINE – JW PLAYER + DVR</title>
+  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
     .header {text-align:center;padding:30px;background:#111;}
-    .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header h1 {font-size:44px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:22px;text-decoration:none;}
-    .player-container {width:95%;max-width:1300px;margin:30px auto;}
-    :root {--plyr-color-main: #ff2d95;}
-    .plyr {border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.8);}
-    .channel-list {margin:20px auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1300px;}
+    #jwplayer {width:95%;max-width:1300px;height:75vh;margin:30px auto;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
+    .channel-list {margin:20px auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1300px;padding:0 20px;}
     .channel-list button {
       background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:16px;transition:0.3s;min-width:180px;
     }
@@ -24,52 +22,27 @@
 <body>
 
   <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
-    <p>150+ kanałów – kliknij i oglądaj od razu</p>
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – JW PLAYER + DVR</h1>
+    <p>150+ kanałów • Przewijanie wstecz • Najlepsza jakość</p>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
 
-  <div class="player-container">
-    <video id="player" controls playsinline></video>
-  </div>
+  <div id="jwplayer"></div>
 
   <div class="channel-list" id="channels">Ładowanie kanałów...</div>
 
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
-    const player = new Plyr('#player', {
-      controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-      autoplay: true,
-      muted: false
-    });
+    let playerInstance;
 
-    let hls;
+    const playlistUrl = 'https://security.freefreaks.top/playlist.m3u';
 
-    function loadChannel(url, btn) {
-      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      if (hls) hls.destroy();
-
-      if (Hls.isSupported()) {
-        hls = new Hls({enableWorker: true, lowLatencyMode: true});
-        hls.loadSource(url);
-        hls.attachMedia(player.media);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
-      } else if (player.media.canPlayType('application/x-mpegURL')) {
-        player.media.src = url;
-        player.play();
-      }
-    }
-
-    // Twoja playlista – działa bez problemu
-    fetch('https://security.freefreaks.top/playlist.m3u?t=' + Date.now())
+    fetch(playlistUrl + '?t=' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
         const container = document.getElementById('channels');
         container.innerHTML = '';
+
         let url = '';
         let name = 'Kanał';
         let first = true;
@@ -84,19 +57,48 @@
 
             const btn = document.createElement('button');
             btn.textContent = name;
-            btn.onclick = () => loadChannel(url, btn);
+            btn.onclick = () => loadChannel(url, name, btn);
             container.appendChild(btn);
 
             if (first) {
-              loadChannel(url, btn);
+              loadChannel(url, name, btn);
               first = false;
             }
           }
         });
-      })
-      .catch(() => {
-        document.getElementById('channels').innerHTML = '<p style="color:red;">Błąd – odśwież stronę</p>';
       });
+
+    function loadChannel(streamUrl, channelName, btn) {
+      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (playerInstance) playerInstance.remove();
+
+      playerInstance = jwplayer("jwplayer").setup({
+        file: streamUrl,
+        title: channelName,
+        width: "100%",
+        height: "100%",
+        autostart: true,
+        stretching: "uniform",
+        displaytitle: true,
+        displaydescription: true,
+        abouttext: "DARMOWE TV",
+        aboutlink: "https://moje-kanaly.vercel.app",
+        // DVR – przewijanie wstecz (działa na większości streamów)
+        hlsjsConfig: {
+          enableWorker: true,
+          xhrSetup: function(xhr, url) {
+            xhr.withCredentials = false;
+          }
+        }
+      });
+
+      playerInstance.on('error', () => {
+        document.getElementById('channels').innerHTML += `<p style="color:red;">Błąd kanału – spróbuj inny</p>`;
+      });
+    }
   </script>
+
 </body>
 </html>
