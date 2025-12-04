@@ -5,22 +5,21 @@
   <title>DARMOWE TV NA VLC PLAYER</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:linear-gradient(135deg, #141e30, #243b55);color:#fff;font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:30px 0;}
-    .container {max-width:1400px;margin:auto;background:rgba(0,0,0,0.5);border-radius:20px;padding:40px;box-shadow:0 20px 50px rgba(0,0,0,0.6);}
+    body {background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:#fff;font-family:'Segoe UI',Arial,sans-serif;margin:0;padding:40px 0;}
+    .container {max-width:1200px;margin:auto;background:rgba(0,0,0,0.6);border-radius:20px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.7);}
     h1 {font-size:48px;text-align:center;margin:0 0 30px;background:linear-gradient(to right,#00c9ff,#92fe9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .download {text-align:center;margin:40px 0;}
-    .download a {background:#00ff9d;color:#000;padding:20px 60px;font-size:28px;border-radius:60px;text-decoration:none;font-weight:bold;box-shadow:0 10px 30px rgba(0,255,157,0.4);}
+    .download {text-align:center;margin:50px 0;}
+    .download a {background:#00ff9d;color:#000;padding:22px 70px;font-size:30px;border-radius:70px;text-decoration:none;font-weight:bold;box-shadow:0 15px 40px rgba(0,255,157,0.5);transition:0.3s;}
     .download a:hover {background:#00cc7a;transform:scale(1.05);}
-    .channels {display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px;margin:50px 0;}
-    .channel button {
-      background:linear-gradient(145deg,#1e3c72,#2a5298);
-      color:#fff;padding:25px;border:none;border-radius:16px;cursor:pointer;font-size:18px;transition:all 0.3s;box-shadow:0 8px 25px rgba(0,0,0,0.4);
-      display:flex;align-items:center;justify-content:center;gap:12px;height:100%;
-    }
-    .channel button:hover {background:#00ff9d;color:#000;transform:translateY(-8px);box-shadow:0 15px 35px rgba(0,255,157,0.5);}
+    table {width:100%;border-collapse:collapse;margin:50px 0;background:rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;}
+    th {background:#00ff9d;color:#000;padding:20px;font-size:22px;}
+    td {padding:14px 20px;font-size:18px;border-bottom:1px solid rgba(255,255,255,0.1);}
+    tr:hover {background:rgba(255,255,255,0.1);}
     .extra {margin-top:80px;text-align:center;}
-    .extra h2 {font-size:32px;color:#0f0;margin-bottom:30px;}
-    .extra-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px;}
+    .extra h2 {font-size:36px;color:#0f0;margin-bottom:40px;text-shadow:0 0 15px #0f0;}
+    .extra-grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:30px;}
+    .extra button {background:#ff2d95;color:#fff;padding:30px;font-size:24px;border:none;border-radius:20px;cursor:pointer;box-shadow:0 0 30px #ff2d95;transition:0.3s;}
+    .extra button:hover {background:#ff0080;transform:scale(1.08);}
   </style>
 </head>
 <body>
@@ -34,44 +33,31 @@
       </a>
     </div>
 
-    <div class="channels">
-      <!-- Wszystkie kanały z Twojej listy -->
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/ttvonline1_tvhd1.m3u8','_blank')"><i class="fas fa-play"></i> ttvonline1_tvhd1</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvn.m3u8','_blank')"><i class="fas fa-play"></i> TVN</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/polsuper_sdtv.m3u8','_blank')"><i class="fas fa-play"></i> Polsat</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvp2_Hdtvts.m3u8','_blank')"><i class="fas fa-play"></i> TVP 2 HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvn24najlepszyt.m3u8','_blank')"><i class="fas fa-play"></i> TVN24</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvp_1hdtvd.m3u8','_blank')"><i class="fas fa-play"></i> TVP 1 HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/pulstv.m3u8','_blank')"><i class="fas fa-play"></i> Puls TV</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/top_kidstvhdtvhtv2.m3u8','_blank')"><i class="fas fa-play"></i> Top Kids TV</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/czworkatv.m3u8','_blank')"><i class="fas fa-play"></i> TV4</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tv_serial24taws.m3u8','_blank')"><i class="fas fa-play"></i> TV Seriale 24</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvp_2_hdtteoa.m3u8','_blank')"><i class="fas fa-play"></i> TVP 2</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/turbomaniak_tvhd.m3u8','_blank')"><i class="fas fa-play"></i> Turbomaniak TV</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/t7hd.m3u8','_blank')"><i class="fas fa-play"></i> T7 HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/elevenspo1.m3u8','_blank')"><i class="fas fa-satellite-dish"></i> Eleven Sports 1</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/polsatfilmhdtv.m3u8','_blank')"><i class="fas fa-film"></i> Polsat Film HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/kino_polska_tv.m3u8','_blank')"><i class="fas fa-film"></i> Kino Polska</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/history.m3u8','_blank')"><i class="fas fa-monument"></i> HISTORY</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/nat_geo_wild_hd.m3u8','_blank')"><i class="fas fa-paw"></i> Nat Geo Wild HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/hbo.m3u8','_blank')"><i class="fas fa-star"></i> HBO</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/cinemaxXD.m3u8','_blank')"><i class="fas fa-film"></i> Cinemax</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/eurosport_1_hd.m3u8','_blank')"><i class="fas fa-trophy"></i> Eurosport 1 HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/tvp_sport_hdtv.m3u8','_blank')"><i class="fas fa-futbol"></i> TVP Sport HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/polo_tv_hd.m3u8','_blank')"><i class="fas fa-music"></i> Polo TV HD</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/disney_junior.m3u8','_blank')"><i class="fas fa-baby"></i> Disney Junior</button></div>
-      <div class="channel"><button onclick="window.open('https://security.freefreaks.top/cartoonnetwork_tv.m3u8','_blank')"><i class="fas fa-laugh"></i> Cartoon Network</button></div>
-      <!-- Możesz dodać resztę ręcznie albo powiedz – zrobię wszystkie 100+ -->
-    </div>
+    <p style="text-align:center;font-size:22px;">Plik zawiera ponad 150 kanałów polskich i zagranicznych w jakości HD/SD:</p>
 
-    <!-- Dodatkowe specjalne kanały -->
+    <table>
+      <tr><th>Kanały w pliku M3U (wybrane przykłady)</th></tr>
+      <tr><td>TVP 1 HD, TVP 2 HD, TVP Sport HD, Polsat, TVN, TVN24, Puls TV, TV4, Eleven Sports 1-4</td></tr>
+      <tr><td>HBO, HBO 2, HBO 3, Cinemax, FilmBox Premium, Kino Polska, Stopklatka, Polsat Film</td></tr>
+      <tr><td>Eurosport 1 HD, Eurosport 2 HD, TVP Sport, Canal+ Sport, Eleven Sports</td></tr>
+      <tr><td>History, Nat Geo Wild, Discovery, Travel Channel, Animal Planet</td></tr>
+      <tr><td>Disney Junior, Disney XD, Cartoon Network, Nickelodeon, Baby TV</td></tr>
+      <tr><td>Polo TV, 4fun.tv, Eska TV, VOX Music TV</td></tr>
+      <tr><td>AXN, 13 Ulica, FOX, Comedy Central, Paramount Channel</td></tr>
+      <tr><td>i wiele, wiele innych – razem ponad 150 stacji!</td></tr>
+    </table>
+
+    <!-- Działające playery online -->
     <div class="extra">
-      <h2><i class="fas fa-gem"></i> SPECJALNE KANAŁY</h2>
+      <h2><i class="fas fa-play-circle"></i> DZIAŁAJĄCE PLAYERY ONLINE</h2>
       <div class="extra-grid">
-        <div class="channel"><button onclick="window.open('https://mmafreee.eu/stream/history.html','_blank')"><i class="fas fa-history"></i> HISTORY (MMAFREE)</button></div>
-        <div class="channel"><button onclick="window.open('https://security.freefreaks.top/history.m3u8','_blank')"><i class="fas fa-monument"></i> HISTORY (FreeFreaks)</button></div>
+        <div><button onclick="window.open('https://mmafreee.eu/stream/history.html','_blank')">
+          <i class="fas fa-history fa-2x"></i><br>HISTORY (na żywo)
+        </button></div>
+        <!-- Tu możesz dodać kolejne w przyszłości -->
       </div>
     </div>
+
   </div>
 
 </body>
