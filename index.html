@@ -3,49 +3,74 @@
 <head>
   <meta charset="utf-8">
   <title>Moje Kanały TV</title>
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
-    h1 {text-align:center;}
-    .channel {margin:15px 0;text-align:center;}
-    .channel button {background:#222;color:#fff;padding:15px;font-size:18px;width:80%;border:none;cursor:pointer;}
-    .channel button:hover {background:#444;}
-    #player {width:90%;max-width:1000px;margin:20px auto;display:block;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
+    .header {text-align:center;padding:20px;background:#111;}
+    .header a {color:#0ff;font-weight:bold;text-decoration:none;}
+    .container {display:flex;}
+    #sidebar {width:300px;background:#111;overflow-y:auto;height:100vh;padding:10px;}
+    .channel {margin:10px 0;}
+    .channel h3 {cursor:pointer;color:#ccc;}
+    .channel h3:hover {color:#fff;}
+    #main {flex:1;padding:20px;}
+    video {width:100%;max-width:800px;height:auto;display:none;}
+    video.active {display:block;}
   </style>
 </head>
 <body>
-  <h1>Moje Kanały TV</h1>
-  <div id="list"></div>
-  <video id="player" class="video-js vjs-default-skin" controls autoplay width="640" height="360"></video>
+  <div class="header">
+    <h1>Moje Kanały TV</h1>
+    <a href="https://security.freefreaks.top/playlist.m3u" download="playlist.m3u"><strong>Pobierz plik M3U</strong></a>
+  </div>
+  <div class="container">
+    <div id="sidebar">Ładowanie kanałów...</div>
+    <div id="main"></div>
+  </div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const m3u = 'https://security.freefreaks.top/playlist.m3u';
-    const player = videojs('player', {fluid: true});
+    const m3uUrl = 'https://security.freefreaks.top/playlist.m3u';
+    let players = {};
 
-    fetch(m3u + '?t=' + Date.now())
+    fetch(m3uUrl)
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const container = document.getElementById('list');
-        let name = 'Kanał';
+        const sidebar = document.getElementById('sidebar');
+        const main = document.getElementById('main');
+        let name = '', desc = '', url = '';
 
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('#EXTINF:')) {
-            name = line.includes('tvg-name="') ? line.split('tvg-name="')[1].split('"')[0] : line.split(',').pop();
+            const nameMatch = line.match(/tvg-name="([^"]+)"/);
+            name = nameMatch ? nameMatch[1] : line.split(',').pop();
+            const groupMatch = line.match(/group-title="([^"]+)"/);
+            desc = groupMatch ? groupMatch[1] : '';
           } else if (line && line.includes('.m3u8')) {
-            const btn = document.createElement('div');
-            btn.className = 'channel';
-            btn.innerHTML = `<button onclick="play('${line}')">${name}</button>`;
-            container.appendChild(btn);
+            url = line;
+            // Sidebar entry
+            const sideEntry = document.createElement('div');
+            sideEntry.className = 'channel';
+            sideEntry.innerHTML = `<h3 onclick="showChannel('${name.replace(/'/g, "\\'")}', '${url.replace(/'/g, "\\'")}')">${name}</h3><p>${desc}</p>`;
+            sidebar.appendChild(sideEntry);
+            // Main player
+            const playerDiv = document.createElement('div');
+            playerDiv.innerHTML = `<h2>${name}</h2><video id="p_${name.replace(/[^a-zA-Z0-9]/g, '_')}" class="video-js" controls width="640" height="360"></video>`;
+            main.appendChild(playerDiv);
+            players[name.replace(/[^a-zA-Z0-9]/g, '_')] = videojs(`p_${name.replace(/[^a-zA-Z0-9]/g, '_')}`, {fluid: true});
+            players[name.replace(/[^a-zA-Z0-9]/g, '_')].src({src: url, type: 'application/x-mpegURL'});
           }
         });
       });
 
-    function play(url) {
-      player.src({type: 'application/x-mpegURL', src: url});
-      player.play();
-      window.scrollTo(0, document.getElementById('player').offsetTop);
+    function showChannel(name, url) {
+      document.querySelectorAll('video').forEach(v => v.style.display = 'none');
+      const playerId = 'p_' + name.replace(/[^a-zA-Z0-9]/g, '_');
+      document.getElementById(playerId).style.display = 'block';
+      players[name.replace(/[^a-zA-Z0-9]/g, '_')].play();
+      document.getElementById('main').scrollTo(0, 0);
     }
   </script>
 </body>
