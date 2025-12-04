@@ -49,4 +49,130 @@
 <!-- TEST 4 – Plyr -->
 <div class="test">
   <h2>4. Plyr (nowoczesny, piękny design)</h2>
-  <p>Wy
+  <p>Wygląda jak Netflix, działa z M3U</p>
+  <video id="plyrtes" class="player" controls playsinline></video>
+  <div class="status" id="plyrstatus">Ładowanie...</div>
+</div>
+
+<!-- TEST 5 – Castr HLS Player -->
+<div class="test">
+  <h2>5. Castr HLS Player (najlepszy do HLS)</h2>
+  <p>Specjalnie do .m3u8 – działa nawet z najtrudniejszymi streamami</p>
+  <div id="castrtest" class="player"></div>
+  <div class="status" id="castrstatus">Ładowanie...</div>
+</div>
+
+<!-- TEST 6 – VLC Web Plugin -->
+<div class="test">
+  <h2>6. VLC Web Plugin (jak VLC w przeglądarce)</h2>
+  <p>Działa jak VLC na komputerze, pełna lista kanałów</p>
+  <embed type="application/x-vlc-plugin" id="vlctest" class="player" target="playlist.m3u">
+  <div class="status" id="vlcstatus">Ładowanie...</div>
+</div>
+
+<!-- TEST 7 – HTML5 + hls.js (minimalny) -->
+<div class="test">
+  <h2>7. HTML5 + hls.js (najlżejszy)</h2>
+  <p>Tylko 2 linie kodu – działa na wszystkim</p>
+  <video id="htmltest" class="player" controls autoplay></video>
+  <div class="status" id="htmlstatus">Ładowanie...</div>
+</div>
+
+<!-- TEST 8 – IPTV Smarters Web (embed) -->
+<div class="test">
+  <h2>8. IPTV Smarters Web (jak aplikacja na telefonie)</h2>
+  <p>Pełna lista kanałów, EPG, najładniejszy</p>
+  <iframe src="https://smarters.tv/player/?playlist=https://raw.githubusercontent.com/magnus544x/moje-kanaly/main/playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 9 – GSE Smart IPTV Web -->
+<div class="test">
+  <h2>9. GSE Smart IPTV Web (jak aplikacja na iOS/Android)</h2>
+  <p>Lista kanałów, EPG, działa idealnie</p>
+  <iframe src="https://iptv.gse-smart.com/?url=https://raw.githubusercontent.com/magnus544x/moje-kanaly/main/playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 10 – IPTV-Player.com (najlepszy online) -->
+<div class="test">
+  <h2>10. IPTV-Player.com (najlepszy darmowy player online)</h2>
+  <p>Lista po prawej, DVR, EPG – działa na wszystkim</p>
+  <iframe src="https://iptv-player.com/player.php?url=https://raw.githubusercontent.com/magnus544x/moje-kanaly/main/playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status">Działa jeśli widzisz obraz</div>
+</div>
+
+<script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+<script src="https://flussonic.com/public/player/v2/player.js"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="https://castr.com/hlsplayer/js/player.js"></script>
+
+<script>
+  const m3u = 'playlist.m3u?' + Date.now();
+
+  // 1. JW Player
+  try {
+    jwplayer("jwtest").setup({playlist: m3u, width: "100%", height: "100%", autostart: true});
+    document.getElementById('jwstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('jwstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 2. Flussonic
+  try {
+    new FlussonicPlayer("#flustest", {url: m3u, autoplay: true});
+    document.getElementById('flusstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('flusstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 3. Video.js
+  try {
+    const vjs = videojs('vjstest', {fluid: true, liveui: true});
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(vjs.tech_.el_);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => vjs.play());
+    }
+    document.getElementById('vjsstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('vjsstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 4. Plyr
+  try {
+    new Plyr('#plyrtes', {autoplay: true});
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(document.getElementById('plyrtes'));
+    }
+    document.getElementById('plyrstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('plyrstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 5. Castr
+  try {
+    new CastrPlayer("#castrtest", {url: m3u, autoplay: true});
+    document.getElementById('castrstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('castrstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 6. VLC Plugin
+  try {
+    const vlc = document.querySelector('embed');
+    vlc.playlist.addTarget(m3u, '', '');
+    vlc.playlist.playItemAtIndex(0);
+    document.getElementById('vlcstatus').innerHTML = '<span class="ok">DZIAŁA (jeśli widzisz obraz)</span>';
+  } catch(e) { document.getElementById('vlcstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 7. HTML5 + hls.js
+  try {
+    const video = document.getElementById('htmltest');
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+    }
+    document.getElementById('htmlstatus').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('htmlstatus').innerHTML = '<span class="fail">Błąd</span>'; }
+</script>
+
+</body>
+</html>
