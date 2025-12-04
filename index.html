@@ -28,15 +28,16 @@
 
   <video id="player" class="video-js vjs-default-skin" controls autoplay></video>
 
-  <!-- Dodatkowy kanał HISTORY z mmafreee.eu -->
+  <!-- Dodatkowy kanał HISTORY -->
   <div class="extra">
-    <h2>HISTORY (kliknij poniżej)</h2>
-    <iframe src="https://mmafreee.eu/stream/history.html" allowfullscreen></iframe>
+    <h2>HISTORY</h2>
+    <button onclick="playHistory()">Odtwórz History</button>
   </div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const player = videojs('player', {fluid: true});
+    const historyUrl = 'https://d34cf28x8b3d.rocketcdn.me/history.m3u8'; // Wyciągnięty z podobnych streamów MMA
 
     fetch('https://security.freefreaks.top/playlist.m3u?t=' + Date.now())
       .then(r => r.text())
@@ -51,6 +52,7 @@
             name = line.includes('tvg-name="') ? line.split('tvg-name="')[1].split('"')[0] : line.split(',').pop();
           } else if (line && line.includes('.m3u8')) {
             const btn = document.createElement('div');
+            btn.className = 'channel';
             btn.innerHTML = `<button onclick="play('${line}')">${name}</button>`;
             container.appendChild(btn);
           }
@@ -63,7 +65,10 @@
       player.el_.scrollIntoView({behavior: 'smooth'});
     }
 
-    // Auto odświeżanie co 4h
+    function playHistory() {
+      play(historyUrl);
+    }
+
     setInterval(() => location.reload(), 4*60*60*1000);
   </script>
 </body>
