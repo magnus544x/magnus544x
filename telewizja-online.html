@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – ODTWARZACZ IPTV</title>
+  <title>TELEWIZJA ONLINE – NA ŻYWO</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -11,69 +11,109 @@
     .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:22px;text-decoration:none;}
     .player-container {width:95%;max-width:1200px;margin:30px auto;}
-    #iptv-player {width:100%;height:70vh;background:#000;}
-    .channel-list {margin-top:20px;text-align:center;}
-    .channel-list button {background:#222;color:#fff;padding:12px 20px;margin:5px;border:none;border-radius:8px;cursor:pointer;font-size:16px;}
+    #iptv-player {width:100%;height:70vh;background:#000;border-radius:12px;overflow:hidden;}
+    .channel-list {margin-top:20px;text-align:center;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:20px;}
+    .channel-list button {
+      background:#222;color:#fff;padding:12px 18px;margin:5px;border:none;border-radius:8px;cursor:pointer;font-size:16px;transition:0.3s;
+    }
     .channel-list button:hover {background:#0f0;color:#000;}
+    .channel-list button.active {background:#0f0;color:#000;font-weight:bold;}
+    .loading {text-align:center;font-size:20px;color:#0f0;}
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
-    <p>Odtwarzacz automatycznie ładuje ponad 150 kanałów z Twojej playlisty</p>
+    <p>Automatycznie ładuje ponad 150 kanałów z Twojej playlisty</p>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
 
   <div class="player-container">
-    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'></video>
+    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{"liveui": true}'></video>
   </div>
 
-  <div class="channel-list" id="channels"></div>
+  <div class="channel-list" id="channels">
+    <div class="loading">Ładowanie kanałów... Proszę czekać</div>
+  </div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const playlistUrl = 'https://security.freefreaks.top/playlist.m3u';
-    const player = videojs('iptv-player', {fluid: true, liveui: true});
+    const player = videojs('iptv-player', {
+      fluid: true,
+      responsive: true,
+      liveui: true,
+      html5: {
+        vhs: {
+          overrideNative: true
+        },
+        nativeVideoTracks: false,
+        nativeAudioTracks: false,
+        nativeTextTracks: false
+      }
+    });
 
-    fetch(playlistUrl + '?t=' + Date.now())
-      .then(r => r.text())
+    // Używamy publicznego proxy, żeby ominąć CORS
+    const proxyUrl = 'https://corsproxy.io/?';
+    const playlistUrl = proxyUrl + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
+
+    fetch(playlistUrl + '&t=' + Date.now())
+      .then(r => {
+        if (!r.ok) throw new Error('Brak odpowiedzi serwera');
+        return r.text();
+      })
       .then(text => {
         const lines = text.split('\n');
         const channelDiv = document.getElementById('channels');
+        channelDiv.innerHTML = ''; // czyścimy "ładowanie"
+
         let currentUrl = '';
         let currentName = 'Nieznany kanał';
+        let firstChannel = true;
 
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('#EXTINF:')) {
             const match = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-            currentName = match ? match[1] : 'Kanał bez nazwy';
+            currentName = match ? match[1].trim() : 'Kanał bez nazwy';
+          } else if (line && line.includes('.m3u8') && !line.includes('http')) {
+            // czasem linki są względne – poprawiamy
+            currentUrl = 'https://security.freefreaks.top/' + line;
           } else if (line && line.includes('.m3u8')) {
             currentUrl = line;
+          }
+
+          if (currentUrl) {
             const btn = document.createElement('button');
             btn.textContent = currentName;
             btn.onclick = () => {
               player.src({type: 'application/x-mpegURL', src: currentUrl});
               player.ready(() => player.play());
-              document.querySelectorAll('.channel-list button').forEach(b => b.style.background = '#222');
-              btn.style.background = '#0f0';
-              btn.style.color = '#000';
+              document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
             };
             channelDiv.appendChild(btn);
 
             // Automatycznie odtwórz pierwszy kanał
-            if (!player.src()) {
+            if (firstChannel) {
               player.src({type: 'application/x-mpegURL', src: currentUrl});
               player.ready(() => player.play());
-              btn.style.background = '#0f0';
-              btn.style.color = '#000';
+              btn.classList.add('active');
+              firstChannel = false;
             }
+
+            currentUrl = '';
           }
         });
+
+        if (firstChannel) {
+          channelDiv.innerHTML = '<p style="color:red;">Nie znaleziono kanałów w playliście.</p>';
+        }
       })
       .catch(err => {
-        document.body.innerHTML += `<p style="color:red;text-align:center;">Błąd ładowania playlisty: ${err}</p>`;
+        document.getElementById('channels').innerHTML = 
+          `<p style="color:red;font-size:20px;">Błąd ładowania playlisty:<br>${err.message}</p>
+           <p>Playlista może być chwilowo niedostępna lub wymaga odświeżenia strony.</p>`;
       });
   </script>
 
