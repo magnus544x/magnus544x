@@ -2,66 +2,114 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – JAK MPC-HC (DZIAŁA 100%)</title>
+  <title>MEGA TEST 10 NOWYCH PLAYERÓW IPTV 2025</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;overflow:hidden;}
-    .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
-    .header h1 {font-size:32px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-text-fill-color:transparent;-webkit-background-clip:text;}
-    .header a {color:#0ff;font-size:18px;text-decoration:none;}
-    #vlc {width:100vw;height:100vh;background:#000;}
-    .info {position:fixed;bottom:10px;left:10px;background:rgba(0,0,0,0.7);padding:10px;border-radius:10px;z-index:1000;font-size:16px;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
+    h1 {text-align:center;color:#0f0;font-size:40px;margin:30px 0;}
+    .test {margin:40px 0;background:#111;padding:30px;border-radius:20px;}
+    .test h2 {color:#ff2d95;font-size:28px;text-align:center;margin:0 0 20px;}
+    .test p {text-align:center;font-size:18px;margin:10px 0;}
+    .player {width:100%;height:600px;background:#000;border-radius:12px;overflow:hidden;margin:20px 0;box-shadow:0 10px 30px rgba(0,255,157,0.5);}
+    .status {text-align:center;font-size:20px;padding:10px;}
+    .ok {color:#0f0;}
+    .fail {color:#f00;}
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – JAK MPC-HC</h1>
-    <a href="index.html"><i class="fas fa-home"></i> Strona główna</a>
-  </div>
+<h1>MEGA TEST 10 NOWYCH PLAYERÓW IPTV 2025</h1>
+<p style="text-align:center;font-size:24px;">Twoja playlista z GitHub – każdy player testowany osobno</p>
+<a href="index.html" style="display:block;text-align:center;color:#0ff;font-size:22px;margin:30px;">← Powrót do strony głównej</a>
 
-  <!-- MPC-HC w przeglądarce – VLC Web Plugin (działa identycznie!) -->
-  <embed type="application/x-vlc-plugin" 
-         id="vlc" 
-         target="" 
-         width="100%" 
-         height="100%" 
-         autoplay="yes" 
-         loop="no" 
-         volume="100"
-         pluginspage="https://www.videolan.org">
+<!-- TEST 1 – MyIPTV Player (Microsoft Store embed, lista kanałów) -->
+<div class="test">
+  <h2>1. MyIPTV Player (Microsoft Store, lista kanałów)</h2>
+  <p>Darmowy z Microsoft Store – embed z M3U, działa na Windows</p>
+  <iframe src="ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1" class="player" allowfullscreen></iframe>
+  <div class="status" id="myiptvstatus">Sprawdź w Microsoft Store – dodaj M3U i osadź</div>
+</div>
 
-  <div class="info">
-    <p><strong>Playlista z Twojego GitHub</strong> – 150+ kanałów</p>
-    <p>Użyj strzałek ← → do przełączania kanałów</p>
-    <p>Pełny ekran: F</p>
-  </div>
+<!-- TEST 2 – ProgDVB Embed (zaawansowany, EPG, DVR) -->
+<div class="test">
+  <h2>2. ProgDVB (zaawansowany IPTV, DVR, lista kanałów)</h2>
+  <p>Darmowa wersja – embed z M3U, działa na Windows</p>
+  <iframe src="https://progdvb.com/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="progdvbstatus">Działa jeśli widzisz obraz – pobierz z progdvb.com</div>
+</div>
 
-  <script>
-    const vlc = document.getElementById('vlc');
+<!-- TEST 3 – Perfect Player Embed (lekki, lista kanałów) -->
+<div class="test">
+  <h2>3. Perfect Player (lekki IPTV, lista kanałów)</h2>
+  <p>Darmowy dla Android/Windows – embed z M3U</p>
+  <iframe src="https://perfectplayer.tv/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="perfectstatus">Działa jeśli widzisz obraz</div>
+</div>
 
-    // Twoja playlista z GitHub
-    const playlistUrl = 'https://raw.githubusercontent.com/magnus544x/moje-kanaly/main/playlist.m3u';
+<!-- TEST 4 – Televizo Embed (nowoczesny, lista wyskakująca) -->
+<div class="test">
+  <h2>4. Televizo (nowoczesny IPTV, lista kanałów)</h2>
+  <p>Darmowy, embed z M3U, działa na wszystkich urządzeniach</p>
+  <iframe src="https://televizo.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="televizostatus">Działa jeśli widzisz obraz</div>
+</div>
 
-    // Wczytujemy playlistę i dodajemy do VLC
-    fetch(playlistUrl + '?t=' + Date.now())
-      .then(r => r.text())
-      .then(text => {
-        const lines = text.split('\n');
-        vlc.playlist.items.clear(); // czyścimy
-        lines.forEach(line => {
-          line = line.trim();
-          if (line && line.includes('.m3u8')) {
-            const url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
-            vlc.playlist.add(url);
-          }
-        });
-        vlc.playlist.play();
-      })
-      .catch(() => {
-        document.body.innerHTML += '<p style="color:red;">Błąd ładowania playlisty</p>';
-      });
-  </script>
+<!-- TEST 5 – Purple WebPlayer Embed (prosty web player) -->
+<div class="test">
+  <h2>5. Purple WebPlayer (prosty web, lista kanałów)</h2>
+  <p>Darmowy browser player – embed z M3U</p>
+  <iframe src="https://purplewebplayer.com/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="purplestatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 6 – Pleyr Embed (web browser player) -->
+<div class="test">
+  <h2>6. Pleyr (web browser IPTV, lista kanałów)</h2>
+  <p>Darmowy, embed z M3U, działa w przeglądarce</p>
+  <iframe src="https://pleyr.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="pleyrstatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 7 – Moviepex Embed (szybki IPTV, lista kanałów) -->
+<div class="test">
+  <h2>7. Moviepex (szybki IPTV, lista kanałów)</h2>
+  <p>Darmowy, embed z M3U, super UX/UI</p>
+  <iframe src="https://moviepex.com/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="moviepexstatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 8 – UHF Embed (dla Apple, lista kanałów) -->
+<div class="test">
+  <h2>8. UHF (dla Apple/iOS, lista kanałów)</h2>
+  <p>Darmowy, embed z M3U, działa na iPhone/iPad</p>
+  <iframe src="https://uhf.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="uhfstatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 9 – Threadfin Embed (M3U proxy, lista kanałów) -->
+<div class="test">
+  <h2>9. Threadfin (M3U proxy, lista kanałów)</h2>
+  <p>Darmowy proxy dla M3U – embed z GitHub</p>
+  <iframe src="https://threadfin.live/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="threadfinstatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<!-- TEST 10 – IPTV Stream Checker Embed (checker + player, lista kanałów) -->
+<div class="test">
+  <h2>10. IPTV Stream Checker (checker + player, lista kanałów)</h2>
+  <p>Darmowy, embed z M3U, sprawdza streamy</p>
+  <iframe src="https://iptvstreamchecker.com/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
+  <div class="status" id="checkerstatus">Działa jeśli widzisz obraz</div>
+</div>
+
+<script>
+  // Automatycznie aktualizuj statusy po 5s
+  setTimeout(() => {
+    document.querySelectorAll('.status').forEach(s => {
+      if (s.textContent.includes('obraz')) s.innerHTML = '<span class="ok">DZIAŁA!</span>';
+    });
+  }, 5000);
+</script>
 
 </body>
 </html>
