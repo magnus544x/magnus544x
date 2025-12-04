@@ -2,50 +2,47 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>Moje Kanały TV + MMAFREE</title>
+  <title>DARMOWE TV NA VLC PLAYER</title>
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center;}
-    h1 {margin:30px 0 10px;}
-    .section {margin:40px 0;}
-    .channels {display:flex;flex-wrap:wrap;gap:15px;justify-content:center;}
-    .channel button {background:#222;color:#fff;padding:15px 20px;border:none;cursor:pointer;font-size:16px;min-width:200px;}
+    h1 {font-size:36px;margin:30px 0;}
+    .download a {color:#0ff;font-size:22px;font-weight:bold;text-decoration:none;}
+    .channels {display:flex;flex-wrap:wrap;gap:15px;justify-content:center;margin:40px 0;}
+    .channel button {background:#222;color:#fff;padding:18px 25px;border:none;cursor:pointer;font-size:17px;min-width:220px;}
     .channel button:hover {background:#444;}
     #player {margin:40px auto;width:90%;max-width:1000px;}
-    .download {margin:30px;}
-    .download a {color:#0ff;font-size:20px;font-weight:bold;text-decoration:none;}
-    .mma {background:#200;color:#0f0;padding:20px;border-top:2px solid #0f0;}
+    .extra {margin-top:60px;padding:30px;background:#111;border-top:4px solid #0f0;}
+    .extra h2 {color:#0f0;font-size:28px;}
+    .extra iframe {width:90%;max-width:1000px;height:600px;border:none;}
   </style>
 </head>
 <body>
 
-  <h1>Moje Kanały TV</h1>
+  <h1>DARMOWE TV NA VLC PLAYER</h1>
   <div class="download">
     <a href="https://security.freefreaks.top/playlist.m3u" download="playlist.m3u">📥 POBIERZ PLIK M3U</a>
   </div>
 
-  <div class="section">
-    <h2>FreeFreaks.top – wszystkie kanały</h2>
-    <div class="channels" id="freefreaks"></div>
-  </div>
-
-  <div class="section mma">
-    <h2>MMAFREE.EU – dzisiejsze walki</h2>
-    <div class="channels" id="mma"></div>
-  </div>
+  <div class="channels" id="list"></div>
 
   <video id="player" class="video-js vjs-default-skin" controls autoplay></video>
+
+  <!-- Dodatkowy kanał HISTORY z mmafreee.eu -->
+  <div class="extra">
+    <h2>HISTORY (kliknij poniżej)</h2>
+    <iframe src="https://mmafreee.eu/stream/history.html" allowfullscreen></iframe>
+  </div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const player = videojs('player', {fluid: true});
 
-    // 1. Kanały z freefreaks
     fetch('https://security.freefreaks.top/playlist.m3u?t=' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const container = document.getElementById('freefreaks');
+        const container = document.getElementById('list');
         let name = 'Kanał';
 
         lines.forEach(line => {
@@ -54,36 +51,19 @@
             name = line.includes('tvg-name="') ? line.split('tvg-name="')[1].split('"')[0] : line.split(',').pop();
           } else if (line && line.includes('.m3u8')) {
             const btn = document.createElement('div');
-            btn.className = 'channel';
             btn.innerHTML = `<button onclick="play('${line}')">${name}</button>`;
             container.appendChild(btn);
           }
         });
       });
 
-    // 2. Kanały z mmafreee.eu/stream (aktualne na 04.12.2025)
-    const mmaChannels = [
-      {name: "MMAFREE Stream 1", url: "https://d34cf28x8b3d.rocketcdn.me/stream1.m3u8"},
-      {name: "MMAFREE Stream 2", url: "https://d34cf28x8b3d.rocketcdn.me/stream2.m3u8"},
-      {name: "MMAFREE Stream 3", url: "https://d34cf28x8b3d.rocketcdn.me/stream3.m3u8"},
-      {name: "MMAFREE Stream 4", url: "https://d34cf28x8b3d.rocketcdn.me/stream4.m3u8"}
-    ];
-
-    const mmaContainer = document.getElementById('mma');
-    mmaChannels.forEach(ch => {
-      const btn = document.createElement('div');
-      btn.className = 'channel';
-      btn.innerHTML = `<button onclick="play('${ch.url}')">${ch.name}</button>`;
-      mmaContainer.appendChild(btn);
-    });
-
     function play(url) {
       player.src({type: 'application/x-mpegURL', src: url});
       player.play();
-      document.getElementById('player').scrollIntoView({behavior: 'smooth'});
+      player.el_.scrollIntoView({behavior: 'smooth'});
     }
 
-    // Auto odświeżanie co 4 godziny
+    // Auto odświeżanie co 4h
     setInterval(() => location.reload(), 4*60*60*1000);
   </script>
 </body>
