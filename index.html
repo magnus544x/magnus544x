@@ -3,76 +3,50 @@
 <head>
   <meta charset="utf-8">
   <title>Moje Kanały TV</title>
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center;}
-    h1 {margin-bottom:20px;}
-    .channel {margin:20px 0;}
-    .channel h3 {cursor:pointer;color:#ccc;}
-    .channel h3:hover {color:#fff;}
-    video {display:none; max-width:100%; margin-top:10px;}
-    video.active {display:block;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
+    h1 {text-align:center;}
+    .channel {margin:15px 0;text-align:center;}
+    .channel button {background:#222;color:#fff;padding:15px;font-size:18px;width:80%;border:none;cursor:pointer;}
+    .channel button:hover {background:#444;}
+    #player {width:90%;max-width:1000px;margin:20px auto;display:block;}
   </style>
 </head>
 <body>
   <h1>Moje Kanały TV</h1>
-  <div id="channels"></div>
+  <div id="list"></div>
+  <video id="player" class="video-js vjs-default-skin" controls autoplay width="640" height="360"></video>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const proxy = 'https://corsproxy.io/?';
-    const m3uUrl = proxy + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
-    let players = {};
+    const m3u = 'https://security.freefreaks.top/playlist.m3u';
+    const player = videojs('player', {fluid: true});
 
-    function loadPlaylist() {
-      document.getElementById('channels').innerHTML = 'Ładowanie...';
-      fetch(m3uUrl + '&t=' + Date.now())
-        .then(r => r.text())
-        .then(text => {
-          const lines = text.split('\n');
-          const div = document.getElementById('channels');
-          div.innerHTML = '';
-          let name = 'Nieznany';
-          let url = '';
+    fetch(m3u + '?t=' + Date.now())
+      .then(r => r.text())
+      .then(text => {
+        const lines = text.split('\n');
+        const container = document.getElementById('list');
+        let name = 'Kanał';
 
-          for (let line of lines) {
-            line = line.trim();
-            if (line.startsWith('#EXTINF:')) {
-              const match = line.match(/tvg-name="([^"]+)"/);
-              name = match ? match[1] : line.split(',').pop();
-            } else if (line && line.includes('.m3u8')) {
-              url = line;
-              const channelDiv = document.createElement('div');
-              channelDiv.className = 'channel';
-              channelDiv.innerHTML = `<h3 onclick="togglePlayer('${name.replace(/'/g, "\\'")}')">${name}</h3>`;
-              const videoId = name.replace(/[^a-zA-Z0-9]/g, '_');
-              channelDiv.innerHTML += `<video id="player_${videoId}" class="video-js" controls preload="auto" width="900" height="506" data-setup='{}'></video>`;
-              div.appendChild(channelDiv);
-              players[videoId] = videojs(`player_${videoId}`, {fluid: true});
-              players[videoId].src({src: url, type: 'application/x-mpegURL'});
-              url = '';
-            }
+        lines.forEach(line => {
+          line = line.trim();
+          if (line.startsWith('#EXTINF:')) {
+            name = line.includes('tvg-name="') ? line.split('tvg-name="')[1].split('"')[0] : line.split(',').pop();
+          } else if (line && line.includes('.m3u8')) {
+            const btn = document.createElement('div');
+            btn.className = 'channel';
+            btn.innerHTML = `<button onclick="play('${line}')">${name}</button>`;
+            container.appendChild(btn);
           }
-        })
-        .catch(err => document.getElementById('channels').innerHTML = '<p>Błąd: ' + err + '</p>');
-    }
-
-    function togglePlayer(name) {
-      const videoId = name.replace(/[^a-zA-Z0-9]/g, '_');
-      Object.keys(players).forEach(id => {
-        const v = document.getElementById('player_' + id);
-        if (v) v.classList.remove('active');
-        players[id].pause();
+        });
       });
-      const activeV = document.getElementById('player_' + videoId);
-      if (activeV) {
-        activeV.classList.add('active');
-        players[videoId].play();
-      }
-    }
 
-    loadPlaylist();
-    setInterval(loadPlaylist, 4 * 60 * 60 * 1000);
+    function play(url) {
+      player.src({type: 'application/x-mpegURL', src: url});
+      player.play();
+      window.scrollTo(0, document.getElementById('player').offsetTop);
+    }
   </script>
 </body>
 </html>
