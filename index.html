@@ -23,6 +23,8 @@
       cursor:pointer;box-shadow:0 0 25px #ff2d95;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:15px;height:100%;
     }
     .extra button:hover {background:#ff0080;transform:scale(1.08);box-shadow:0 0 40px #ff2d95;}
+    .favorite {background:#00ff9d !important;color:#000 !important;box-shadow:0 0 40px #00ff9d !important;}
+    .favorite:hover {background:#00cc7a !important;}
   </style>
 </head>
 <body>
@@ -31,7 +33,7 @@
     <h1><i class="fas fa-tv"></i> DARMOWE TV NA VLC PLAYER</h1>
 
     <div class="download">
-      <a href="https://security.freefreaks.top/0playlist.m3u" download="playlist.m3u">
+      <a href="https://security.freefreaks.top/playlist.m3u" download="playlist.m3u">
         <i class="fas fa-download fa-2x"></i> POBIERZ PLIK M3U
       </a>
     </div>
@@ -45,9 +47,19 @@
       <tr><td>Polo TV • 4fun.tv • FilmBox • Stopklatka • i ponad 100 innych stacji!</td></tr>
     </table>
 
-    <!-- DZIAŁAJĄCE PLAYERY ONLINE – POSORTOWANE ALFABETYCZNIE -->
+    <!-- NAJCZĘŚCIEJ OGLĄDANE -->
     <div class="extra">
-      <h2><i class="fas fa-play-circle"></i> DZIAŁAJĄCE PLAYERY ONLINE (A-Z)</h2>
+      <h2><i class="fas fa-star"></i> NAJCZĘŚCIEJ OGLĄDANE</h2>
+      <div class="extra-grid">
+        <div><button class="favorite" onclick="window.open('https://security.freefreaks.top/player.php?id=turbomaniak_tvhd','_blank')"><i class="fas fa-car"></i> TVN TURBO</button></div>
+        <div><button class="favorite" onclick="window.open('https://mmafreee.eu/stream/history.html','_blank')"><i class="fas fa-history"></i> HISTORY</button></div>
+        <div><button class="favorite" onclick="window.open('https://mmafreee.eu/stream/history2.html','_blank')"><i class="fas fa-history"></i> HISTORY 2</button></div>
+      </div>
+    </div>
+
+    <!-- WSZYSTKIE KANAŁY A-Z -->
+    <div class="extra">
+      <h2><i class="fas fa-play-circle"></i> WSZYSTKIE KANAŁY ONLINE (A-Z)</h2>
       <div class="extra-grid">
 
         <div><button onclick="window.open('https://security.freefreaks.top/player.php?id=archiwumx','_blank')"><i class="fas fa-folder-open"></i> ARCHIWUM X</button></div>
@@ -62,7 +74,7 @@
         <div><button onclick="window.open('https://mmafreee.eu/stream/elevensports1.html','_blank')"><i class="fas fa-futbol"></i> ELEVEN SPORTS 1</button></div>
         <div><button onclick="window.open('https://mmafreee.eu/stream/elevensports2.html','_blank')"><i class="fas fa-futbol"></i> ELEVEN SPORTS 2</button></div>
         <div><button onclick="window.open('https://mmafreee.eu/stream/elevensports3.html','_blank')"><i class="fas fa-futbol"></i> ELEVEN SPORTS 3</button></div>
-        <div><button onclick="window.open('https://mmafreee.eu/stream/elevensports4.html','_blank')"><i class="fas fa-futbol"></i> ELEVEN SPORTS 4</button></div>
+        <div><button onclick="window.open('https://mmafreee.eu/stream/elevensports4.html','_blank')"><i class="fas fa-f-futbol"></i> ELEVEN SPORTS 4</button></div>
         <div><button onclick="window.open('https://mmafreee.eu/stream/eurosport1.html','_blank')"><i class="fas fa-trophy"></i> EUROSPORT</button></div>
         <div><button onclick="window.open('https://security.freefreaks.top/player.php?id=film_familt','_blank')"><i class="fas fa-home"></i> FAMILY</button></div>
         <div><button onclick="window.open('https://mmafreee.eu/stream/fightbox.html','_blank')"><i class="fas fa-fist-raised"></i> FIGHT BOX</button></div>
