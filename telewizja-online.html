@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>MEGA TEST IPTV 2025 – 7 PLAYERÓW + 150+ KANAŁÓW</title>
+  <title>MEGA TEST IPTV 2025 – 7 PLAYERÓW + PEŁNA LISTA KANAŁÓW</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
@@ -14,7 +14,7 @@
     .players {display:grid;grid-template-columns:repeat(auto-fit,minmax(500px,1fr));gap:20px;}
     .player-box {background:#222;padding:15px;border-radius:10px;text-align:center;}
     .player-box h3 {color:#00ff9d;margin:0 0 10px;}
-    video, div[id^="jw"], div[id^="flus"] {width:100%;height:400px;background:#000;border-radius:8px;}
+    video, div[id^="jw"], div[id^="flus"], div[id^="castr"] {width:100%;height:400px;background:#000;border-radius:8px;}
     .status {margin-top:10px;font-size:16px;}
     .ok {color:#0f0;}
     .fail {color:#f00;}
@@ -23,7 +23,7 @@
 <body>
 
 <h1>MEGA TEST IPTV – 7 PLAYERÓW NA RAZ</h1>
-<p style="text-align:center;font-size:22px;">Twoja playlista z GitHub – każdy kanał testowany na 7 playerach</p>
+<p style="text-align:center;font-size:22px;">Pełna lista kanałów z Twojego playlist.m3u z GitHub – każdy testowany na 7 playerach</p>
 <a href="index.html" style="display:block;text-align:center;color:#0ff;font-size:20px;margin:20px;">← Powrót do strony głównej</a>
 
 <div id="test"></div>
@@ -33,7 +33,7 @@
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-<script src="https://castr.com/hlsplayer/js/player.js"></script> <!-- Nowy: Castr HLS Tester -->
+<script src="https://castr.com/hlsplayer/js/player.js"></script>
 
 <script>
   fetch('playlist.m3u?' + Date.now())
@@ -41,9 +41,9 @@
     .then(text => {
       const lines = text.split('\n');
       const container = document.getElementById('test');
+      let channels = []; // Zbieramy kanały
       let url = '';
       let name = 'Kanał';
-      let count = 0;
 
       lines.forEach(line => {
         line = line.trim();
@@ -51,110 +51,116 @@
           const m = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
           name = m ? m[1].trim() : 'Kanał';
         } else if (line && line.includes('.m3u8')) {
-          count++;
           url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
-
-          const div = document.createElement('div');
-          div.className = 'channel';
-          div.innerHTML = `
-            <h2>${count}. ${name}</h2>
-            <div class="players">
-              <div class="player-box"><h3>JW Player</h3><div id="jw${count}"></div><div class="status" id="s1${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>Flussonic</h3><div id="flus${count}"></div><div class="status" id="s2${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>Video.js</h3><video id="vjs${count}" class="video-js"></video><div class="status" id="s3${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>Plyr</h3><video id="plyr${count}"></video><div class="status" id="s4${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>HLS.js</h3><video id="hls${count}" controls></video><div class="status" id="s5${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>HTML5</h3><video id="html${count}" controls></video><div class="status" id="s6${count}">Ładowanie...</div></div>
-              <div class="player-box"><h3>Castr HLS Tester</h3><div id="castr${count}"></div><div class="status" id="s7${count}">Ładowanie...</div></div>
-            </div>
-          `;
-          container.appendChild(div);
-
-          // 1. JW Player
-          try {
-            jwplayer(`jw${count}`).setup({
-              file: url,
-              width: "100%",
-              height: "400",
-              autostart: true
-            });
-            document.getElementById(`s1${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s1${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 2. Flussonic
-          try {
-            new FlussonicPlayer(`#flus${count}`, {
-              url: url,
-              autoplay: true
-            });
-            document.getElementById(`s2${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s2${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 3. Video.js
-          try {
-            const vjs = videojs(`vjs${count}`, {fluid: true, liveui: true});
-            if (Hls.isSupported()) {
-              const hls = new Hls();
-              hls.loadSource(url);
-              hls.attachMedia(vjs.tech_.el_);
-              hls.on(Hls.Events.MANIFEST_PARSED, () => vjs.play());
-            }
-            document.getElementById(`s3${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s3${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 4. Plyr
-          try {
-            new Plyr(`#plyr${count}`, {autoplay: true});
-            if (Hls.isSupported()) {
-              const hls = new Hls();
-              hls.loadSource(url);
-              hls.attachMedia(document.getElementById(`plyr${count}`));
-            }
-            document.getElementById(`s4${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s4${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 5. HLS.js czysty
-          try {
-            const video = document.getElementById(`hls${count}`);
-            if (Hls.isSupported()) {
-              const hls = new Hls();
-              hls.loadSource(url);
-              hls.attachMedia(video);
-              hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-            }
-            document.getElementById(`s5${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s5${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 6. HTML5 fallback
-          try {
-            document.getElementById(`html${count}`).src = url;
-            document.getElementById(`s6${count}`).innerHTML = '<span class="ok">DZIAŁA (jeśli obraz)</span>';
-          } catch(e) {
-            document.getElementById(`s6${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
-
-          // 7. Castr HLS Tester (nowy)
-          try {
-            new CastrPlayer(`#castr${count}`, {
-              url: url,
-              autoplay: true
-            });
-            document.getElementById(`s7${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
-          } catch(e) {
-            document.getElementById(`s7${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
-          }
+          channels.push({name: name, url: url});
         }
       });
+
+      channels.forEach((ch, index) => {
+        const count = index + 1;
+        const div = document.createElement('div');
+        div.className = 'channel';
+        div.innerHTML = `
+          <h2>${count}. ${ch.name}</h2>
+          <div class="players">
+            <div class="player-box"><h3>JW Player</h3><div id="jw${count}"></div><div class="status" id="s1${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>Flussonic</h3><div id="flus${count}"></div><div class="status" id="s2${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>Video.js</h3><video id="vjs${count}" class="video-js"></video><div class="status" id="s3${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>Plyr</h3><video id="plyr${count}"></video><div class="status" id="s4${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>HLS.js</h3><video id="hls${count}" controls></video><div class="status" id="s5${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>HTML5</h3><video id="html${count}" controls></video><div class="status" id="s6${count}">Ładowanie...</div></div>
+            <div class="player-box"><h3>Castr HLS</h3><div id="castr${count}"></div><div class="status" id="s7${count}">Ładowanie...</div></div>
+          </div>
+        `;
+        container.appendChild(div);
+
+        // Test JW Player
+        try {
+          jwplayer(`jw${count}`).setup({
+            file: ch.url,
+            width: "100%",
+            height: "400",
+            autostart: true
+          });
+          document.getElementById(`s1${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s1${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test Flussonic
+        try {
+          new FlussonicPlayer(`#flus${count}`, {
+            url: ch.url,
+            autoplay: true
+          });
+          document.getElementById(`s2${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s2${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test Video.js
+        try {
+          const vjs = videojs(`vjs${count}`, {fluid: true, liveui: true});
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(ch.url);
+            hls.attachMedia(vjs.tech_.el_);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => vjs.play());
+          }
+          document.getElementById(`s3${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s3${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test Plyr
+        try {
+          new Plyr(`#plyr${count}`, {autoplay: true});
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(ch.url);
+            hls.attachMedia(document.getElementById(`plyr${count}`));
+          }
+          document.getElementById(`s4${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s4${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test HLS.js czysty
+        try {
+          const video = document.getElementById(`hls${count}`);
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(ch.url);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+          }
+          document.getElementById(`s5${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s5${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test HTML5 fallback
+        try {
+          document.getElementById(`html${count}`).src = ch.url;
+          document.getElementById(`s6${count}`).innerHTML = '<span class="ok">DZIAŁA (jeśli obraz)</span>';
+        } catch(e) {
+          document.getElementById(`s6${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+
+        // Test Castr HLS Tester (nowy)
+        try {
+          new CastrPlayer(`#castr${count}`, {
+            url: ch.url,
+            autoplay: true
+          });
+          document.getElementById(`s7${count}`).innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) {
+          document.getElementById(`s7${count}`).innerHTML = '<span class="fail">BŁĄD</span>';
+        }
+      });
+    })
+    .catch(e => {
+      document.getElementById('test').innerHTML = '<p style="color:red;text-align:center;">Błąd ładowania playlisty: ' + e + '</p>';
     });
 </script>
 
