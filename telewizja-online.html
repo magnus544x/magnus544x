@@ -10,22 +10,21 @@
     .header {text-align:center;padding:30px;background:#111;}
     .header h1 {font-size:42px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:22px;text-decoration:none;}
-    .player-container {width:95%;max-width:1200px;margin:30px auto;}
-    #iptv-player {width:100%;height:70vh;background:#000;border-radius:12px;overflow:hidden;}
-    .channel-list {margin-top:20px;text-align:center;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:20px;}
+    .player-container {width:95%;max-width:1300px;margin:30px auto;}
+    #iptv-player {width:100%;height:75vh;background:#000;border-radius:12px;overflow:hidden;}
+    .channel-list {margin-top:20px;text-align:center;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:20px;}
     .channel-list button {
-      background:#222;color:#fff;padding:12px 18px;margin:5px;border:none;border-radius:8px;cursor:pointer;font-size:16px;transition:0.3s;
+      background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:16px;transition:0.3s;min-width:180px;
     }
     .channel-list button:hover {background:#0f0;color:#000;}
     .channel-list button.active {background:#0f0;color:#000;font-weight:bold;}
-    .loading {text-align:center;font-size:20px;color:#0f0;}
   </style>
 </head>
 <body>
 
   <div class="header">
     <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
-    <p>Automatycznie ładuje ponad 150 kanałów z Twojej playlisty</p>
+    <p>150+ kanałów – działa od razu, bez błędów</p>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
 
@@ -33,89 +32,52 @@
     <video id="iptv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{"liveui": true}'></video>
   </div>
 
-  <div class="channel-list" id="channels">
-    <div class="loading">Ładowanie kanałów... Proszę czekać</div>
-  </div>
+  <div class="channel-list" id="channels">Ładowanie kanałów...</div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
-    const player = videojs('iptv-player', {
-      fluid: true,
-      responsive: true,
-      liveui: true,
-      html5: {
-        vhs: {
-          overrideNative: true
-        },
-        nativeVideoTracks: false,
-        nativeAudioTracks: false,
-        nativeTextTracks: false
-      }
-    });
+    const player = videojs('iptv-player', {fluid: true, liveui: true});
 
-    // Używamy publicznego proxy, żeby ominąć CORS
-    const proxyUrl = 'https://corsproxy.io/?';
-    const playlistUrl = proxyUrl + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
-
-    fetch(playlistUrl + '&t=' + Date.now())
-      .then(r => {
-        if (!r.ok) throw new Error('Brak odpowiedzi serwera');
-        return r.text();
-      })
+    // Teraz pobieramy z Twojego własnego pliku w repozytorium – zero CORS!
+    fetch('playlist.m3u?t=' + Date.now())
+      .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
         const channelDiv = document.getElementById('channels');
-        channelDiv.innerHTML = ''; // czyścimy "ładowanie"
-
-        let currentUrl = '';
-        let currentName = 'Nieznany kanał';
-        let firstChannel = true;
+        channelDiv.innerHTML = '';
+        let url = '';
+        let name = 'Kanał';
+        let first = true;
 
         lines.forEach(line => {
           line = line.trim();
           if (line.startsWith('#EXTINF:')) {
             const match = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-            currentName = match ? match[1].trim() : 'Kanał bez nazwy';
-          } else if (line && line.includes('.m3u8') && !line.includes('http')) {
-            // czasem linki są względne – poprawiamy
-            currentUrl = 'https://security.freefreaks.top/' + line;
+            name = match ? match[1].trim() : 'Kanał';
           } else if (line && line.includes('.m3u8')) {
-            currentUrl = line;
-          }
-
-          if (currentUrl) {
+            url = line;
             const btn = document.createElement('button');
-            btn.textContent = currentName;
+            btn.textContent = name;
             btn.onclick = () => {
-              player.src({type: 'application/x-mpegURL', src: currentUrl});
-              player.ready(() => player.play());
-              document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
+              player.src({type: 'application/x-mpegURL', src: url});
+              player.play();
+              document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
               btn.classList.add('active');
             };
             channelDiv.appendChild(btn);
 
-            // Automatycznie odtwórz pierwszy kanał
-            if (firstChannel) {
-              player.src({type: 'application/x-mpegURL', src: currentUrl});
-              player.ready(() => player.play());
+            if (first) {
+              player.src({type: 'application/x-mpegURL', src: url});
+              player.play();
               btn.classList.add('active');
-              firstChannel = false;
+              first = false;
             }
-
-            currentUrl = '';
           }
         });
-
-        if (firstChannel) {
-          channelDiv.innerHTML = '<p style="color:red;">Nie znaleziono kanałów w playliście.</p>';
-        }
       })
-      .catch(err => {
-        document.getElementById('channels').innerHTML = 
-          `<p style="color:red;font-size:20px;">Błąd ładowania playlisty:<br>${err.message}</p>
-           <p>Playlista może być chwilowo niedostępna lub wymaga odświeżenia strony.</p>`;
+      .catch(() => {
+        document.getElementById('channels').innerHTML = '<p style="color:red;">Błąd – odśwież stronę</p>';
       });
   </script>
-
 </body>
 </html>
