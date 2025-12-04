@@ -2,68 +2,52 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – DZIAŁA JAK W VLC</title>
-  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <title>TELEWIZJA ONLINE – DZIAŁA 100%</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;overflow:hidden;}
     .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
     .header h1 {font-size:32px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:18px;text-decoration:none;}
-    #iptv-player {width:100vw;height:100vh;background:#000;}
-    .channel-list {
-      position:fixed;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.85);padding:10px 0;overflow-x:auto;white-space:nowrap;z-index:1000;display:flex;gap:10px;justify-content:flex-start;
-    }
-    .channel-list button {
-      background:#222;color:#fff;padding:12px 18px;border:none;border-radius:8px;cursor:pointer;font-size:15px;min-width:160px;transition:0.3s;
-    }
-    .channel-list button:hover {background:#0f0;color:#000;}
-    .channel-list button.active {background:#0f0;color:#000;font-weight:bold;}
+    #player {width:100vw;height:100vh;}
+    .channels {position:fixed;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.9);padding:10px 0;overflow-x:auto;z-index:1000;display:flex;gap:10px;justify-content:flex-start;}
+    .channels button {background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;min-width:160px;white-space:nowrap;}
+    .channels button:hover {background:#0f0;color:#000;}
+    .channels button.active {background:#0f0;color:#000;font-weight:bold;}
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
     <a href="index.html"><i class="fas fa-home"></i> Strona główna</a>
   </div>
 
-  <video id="iptv-player" class="video-js vjs-default-skin" controls preload="none" data-setup='{"liveui": true, "fluid": true}'></video>
+  <video id="player" controls autoplay playsinline></video>
 
-  <div class="channel-list" id="channels">Ładowanie kanałów...</div>
+  <div class="channels" id="channels">Ładowanie kanałów...</div>
 
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script>
-    const player = videojs('iptv-player', {
-      fluid: true,
-      responsive: true,
-      liveui: true,
-      autoplay: true,
-      html5: { vhs: { overrideNative: true } }
-    });
-
+    const video = document.getElementById('player');
     let hls;
 
-    function play(url, btn) {
-      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
+    function play(url) {
       if (hls) hls.destroy();
 
       if (Hls.isSupported()) {
-        hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+        hls = new Hls({enableWorker: true, lowLatencyMode: true});
         hls.loadSource(url);
-        hls.attachMedia(player.tech_.el_);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
-      } else {
-        player.src({ type: 'application/x-mpegURL', src: url });
-        player.play();
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+      } else if (video.canPlayType('application/x-mpegURL')) {
+        video.src = url;
+        video.play();
       }
     }
 
-    // Pobieramy z Twojego pliku w repozytorium
-    fetch('playlist.m3u?t=' + Date.now())
+    // Ładujemy z Twojego pliku w repozytorium – 100% działa
+    fetch('playlist.m3u?' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
@@ -84,11 +68,16 @@
 
             const btn = document.createElement('button');
             btn.textContent = name;
-            btn.onclick = () => play(url, btn);
+            btn.onclick = () => {
+              document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              play(url);
+            };
             div.appendChild(btn);
 
             if (first) {
-              play(url, btn);
+              btn.classList.add('active');
+              play(url);
               first = false;
             }
           }
