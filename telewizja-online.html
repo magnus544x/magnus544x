@@ -2,114 +2,99 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>MEGA TEST 10 NOWYCH PLAYERÓW IPTV 2025</title>
+  <title>TELEWIZJA ONLINE – DZIAŁA 100% (z Twojego GitHub)</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
-    h1 {text-align:center;color:#0f0;font-size:40px;margin:30px 0;}
-    .test {margin:40px 0;background:#111;padding:30px;border-radius:20px;}
-    .test h2 {color:#ff2d95;font-size:28px;text-align:center;margin:0 0 20px;}
-    .test p {text-align:center;font-size:18px;margin:10px 0;}
-    .player {width:100%;height:600px;background:#000;border-radius:12px;overflow:hidden;margin:20px 0;box-shadow:0 10px 30px rgba(0,255,157,0.5);}
-    .status {text-align:center;font-size:20px;padding:10px;}
-    .ok {color:#0f0;}
-    .fail {color:#f00;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;overflow:hidden;}
+    .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
+    .header h1 {font-size:32px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header a {color:#0ff;font-size:18px;text-decoration:none;}
+    #iptv-player {width:100vw;height:100vh;background:#000;}
+    .channel-list {position:fixed;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.9);padding:10px 0;overflow-x:auto;z-index:1000;display:flex;gap:10px;justify-content:flex-start;}
+    .channel-list button {background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;min-width:160px;white-space:nowrap;}
+    .channel-list button:hover {background:#00ff9d;color:#000;}
+    .channel-list button.active {background:#00ff9d;color:#000;font-weight:bold;}
   </style>
 </head>
 <body>
 
-<h1>MEGA TEST 10 NOWYCH PLAYERÓW IPTV 2025</h1>
-<p style="text-align:center;font-size:24px;">Twoja playlista z GitHub – każdy player testowany osobno</p>
-<a href="index.html" style="display:block;text-align:center;color:#0ff;font-size:22px;margin:30px;">← Powrót do strony głównej</a>
+  <div class="header">
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
+    <a href="index.html"><i class="fas fa-home"></i> Strona główna</a>
+  </div>
 
-<!-- TEST 1 – MyIPTV Player (Microsoft Store embed, lista kanałów) -->
-<div class="test">
-  <h2>1. MyIPTV Player (Microsoft Store, lista kanałów)</h2>
-  <p>Darmowy z Microsoft Store – embed z M3U, działa na Windows</p>
-  <iframe src="ms-windows-store://pdp/?ProductId=9NBLGGH4NNS1" class="player" allowfullscreen></iframe>
-  <div class="status" id="myiptvstatus">Sprawdź w Microsoft Store – dodaj M3U i osadź</div>
-</div>
+  <video id="iptv-player" class="video-js vjs-default-skin" controls autoplay playsinline></video>
 
-<!-- TEST 2 – ProgDVB Embed (zaawansowany, EPG, DVR) -->
-<div class="test">
-  <h2>2. ProgDVB (zaawansowany IPTV, DVR, lista kanałów)</h2>
-  <p>Darmowa wersja – embed z M3U, działa na Windows</p>
-  <iframe src="https://progdvb.com/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="progdvbstatus">Działa jeśli widzisz obraz – pobierz z progdvb.com</div>
-</div>
+  <div class="channel-list" id="channels">Ładowanie kanałów z Twojego GitHub...</div>
 
-<!-- TEST 3 – Perfect Player Embed (lekki, lista kanałów) -->
-<div class="test">
-  <h2>3. Perfect Player (lekki IPTV, lista kanałów)</h2>
-  <p>Darmowy dla Android/Windows – embed z M3U</p>
-  <iframe src="https://perfectplayer.tv/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="perfectstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 4 – Televizo Embed (nowoczesny, lista wyskakująca) -->
-<div class="test">
-  <h2>4. Televizo (nowoczesny IPTV, lista kanałów)</h2>
-  <p>Darmowy, embed z M3U, działa na wszystkich urządzeniach</p>
-  <iframe src="https://televizo.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="televizostatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 5 – Purple WebPlayer Embed (prosty web player) -->
-<div class="test">
-  <h2>5. Purple WebPlayer (prosty web, lista kanałów)</h2>
-  <p>Darmowy browser player – embed z M3U</p>
-  <iframe src="https://purplewebplayer.com/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="purplestatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 6 – Pleyr Embed (web browser player) -->
-<div class="test">
-  <h2>6. Pleyr (web browser IPTV, lista kanałów)</h2>
-  <p>Darmowy, embed z M3U, działa w przeglądarce</p>
-  <iframe src="https://pleyr.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="pleyrstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 7 – Moviepex Embed (szybki IPTV, lista kanałów) -->
-<div class="test">
-  <h2>7. Moviepex (szybki IPTV, lista kanałów)</h2>
-  <p>Darmowy, embed z M3U, super UX/UI</p>
-  <iframe src="https://moviepex.com/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="moviepexstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 8 – UHF Embed (dla Apple, lista kanałów) -->
-<div class="test">
-  <h2>8. UHF (dla Apple/iOS, lista kanałów)</h2>
-  <p>Darmowy, embed z M3U, działa na iPhone/iPad</p>
-  <iframe src="https://uhf.tv/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="uhfstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 9 – Threadfin Embed (M3U proxy, lista kanałów) -->
-<div class="test">
-  <h2>9. Threadfin (M3U proxy, lista kanałów)</h2>
-  <p>Darmowy proxy dla M3U – embed z GitHub</p>
-  <iframe src="https://threadfin.live/embed? m3u=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="threadfinstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<!-- TEST 10 – IPTV Stream Checker Embed (checker + player, lista kanałów) -->
-<div class="test">
-  <h2>10. IPTV Stream Checker (checker + player, lista kanałów)</h2>
-  <p>Darmowy, embed z M3U, sprawdza streamy</p>
-  <iframe src="https://iptvstreamchecker.com/embed?playlist=playlist.m3u" class="player" allowfullscreen></iframe>
-  <div class="status" id="checkerstatus">Działa jeśli widzisz obraz</div>
-</div>
-
-<script>
-  // Automatycznie aktualizuj statusy po 5s
-  setTimeout(() => {
-    document.querySelectorAll('.status').forEach(s => {
-      if (s.textContent.includes('obraz')) s.innerHTML = '<span class="ok">DZIAŁA!</span>';
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+  <script>
+    const player = videojs('iptv-player', {
+      fluid: true,
+      responsive: true,
+      liveui: true,
+      autoplay: true,
+      html5: { vhs: { overrideNative: true } }
     });
-  }, 5000);
-</script>
 
+    let hls;
+
+    function play(url, btn) {
+      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (hls) hls.destroy();
+
+      if (Hls.isSupported()) {
+        hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+        hls.loadSource(url);
+        hls.attachMedia(player.tech_.el_);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
+      } else {
+        player.src({ type: 'application/x-mpegURL', src: url });
+        player.play();
+      }
+    }
+
+    // TWOJA PLAYLISTA Z GITHUB (prawidłowy link raw)
+    const githubRawUrl = 'https://raw.githubusercontent.com/magnus544x/magnus544x/main/playlist.m3u';
+
+    fetch(githubRawUrl + '?t=' + Date.now())
+      .then(r => r.text())
+      .then(text => {
+        const lines = text.split('\n');
+        const div = document.getElementById('channels');
+        div.innerHTML = '';
+
+        let url = '';
+        let name = 'Kanał';
+        let first = true;
+
+        lines.forEach(line => {
+          line = line.trim();
+          if (line.startsWith('#EXTINF:')) {
+            const m = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
+            name = m ? m[1].trim() : 'Kanał';
+          } else if (line && line.includes('.m3u8')) {
+            url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
+
+            const btn = document.createElement('button');
+            btn.textContent = name;
+            btn.onclick = () => play(url, btn);
+            div.appendChild(btn);
+
+            if (first) {
+              btn.classList.add('active');
+              play(url, btn);
+              first = false;
+            }
+          }
+        });
+      })
+      .catch(() => {
+        document.getElementById('channels').innerHTML = '<p style="color:red;">Błąd – odśwież stronę</p>';
+      });
+  </script>
 </body>
 </html>
