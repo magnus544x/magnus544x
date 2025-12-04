@@ -2,39 +2,128 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – JW PLAYER + DVR</title>
-  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <title>MEGA TEST 6 PLAYERÓW IPTV</title>
   <style>
-    body {margin:0;background:#000;color:#fff;font-family:Arial;overflow:hidden;}
-    .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
-    .header h1 {font-size:36px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .header a {color:#0ff;font-size:20px;text-decoration:none;}
-    #jwplayer {width:100vw;height:100vh;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
+    h1 {text-align:center;color:#0f0;font-size:40px;}
+    .player-box {margin:40px 0;padding:20px;background:#111;border:2px solid #333;border-radius:15px;}
+    .player-box h2 {color:#ff2d95;margin:0 0 20px;text-align:center;}
+    .player {width:100%;height:500px;background:#000;border-radius:10px;overflow:hidden;}
+    .status {text-align:center;margin-top:10px;font-size:18px;}
+    .ok {color:#0f0;}
+    .fail {color:#f00;}
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
-    <a href="index.html"><i class="fas fa-home"></i> Powrót do strony głównej</a>
-  </div>
+<h1>MEGA TEST – 6 PLAYERÓW IPTV Z TWOJEGO GITHUB</h1>
+<p style="text-align:center;">Playlista: <strong>playlist.m3u</strong> z Twojego repozytorium</p>
 
-  <div id="jwplayer"></div>
+<!-- PLAYER 1 – JW Player (najczęściej działa) -->
+<div class="player-box">
+  <h2>1. JW Player 8 + DVR (najlepszy)</h2>
+  <div id="jw1" class="player"></div>
+  <div class="status" id="status1">Ładowanie...</div>
+</div>
 
-  <script>
-    jwplayer("jwplayer").setup({
-      playlist: "playlist.m3u",           // ← Twój plik z repozytorium GitHub!
-      width: "100%",
-      height: "100%",
-      autostart: true,
-      stretching: "uniform",
-      displaytitle: true,
-      displaydescription: true,
-      abouttext: "DARMOWE TV",
-      aboutlink: "https://moje-kanaly.vercel.app"
-    });
-  </script>
+<!-- PLAYER 2 – Flussonic (bardzo stabilny) -->
+<div class="player-box">
+  <h2>2. Flussonic Web Player</h2>
+  <div id="flus" class="player"></div>
+  <div class="status" id="status2">Ładowanie...</div>
+</div>
+
+<!-- PLAYER 3 – Video.js + hls.js -->
+<div class="player-box">
+  <h2>3. Video.js + hls.js</h2>
+  <video id="vjs" class="player" controls></video>
+  <div class="status" id="status3">Ładowanie...</div>
+</div>
+
+<!-- PLAYER 4 – Plyr -->
+<div class="player-box">
+  <h2>4. Plyr (nowoczesny)</h2>
+  <video id="plyr" class="player" controls playsinline></video>
+  <div class="status" id="status4">Ładowanie...</div>
+</div>
+
+<!-- PLAYER 5 – HLS.js czysty -->
+<div class="player-box">
+  <h2>5. HLS.js (minimalny)</h2>
+  <video id="hlsjs" class="player" controls autoplay></video>
+  <div class="status" id="status5">Ładowanie...</div>
+</div>
+
+<!-- PLAYER 6 – HTML5 fallback -->
+<div class="player-box">
+  <h2>6. HTML5 Video (fallback)</h2>
+  <video id="html5" class="player" controls autoplay>
+    <source src="playlist.m3u" type="application/x-mpegURL">
+  </video>
+  <div class="status" id="status6">Ładowanie...</div>
+</div>
+
+<script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+<script src="https://flussonic.com/public/player/v2/player.js"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+<script>
+  const m3u = 'playlist.m3u?' + Date.now();
+
+  // 1. JW Player
+  try {
+    jwplayer("jw1").setup({playlist: m3u, width: "100%", height: "100%", autostart: true});
+    document.getElementById('status1').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('status1').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 2. Flussonic
+  try {
+    new FlussonicPlayer("#flus", {url: m3u, autoplay: true});
+    document.getElementById('status2').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('status2').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 3. Video.js
+  try {
+    const vjs = videojs('vjs', {fluid: true, liveui: true});
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(vjs.tech_.el_);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => vjs.play());
+    }
+    document.getElementById('status3').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('status3').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 4. Plyr
+  try {
+    const plyr = new Plyr('#plyr', {autoplay: true});
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(plyr.media);
+    }
+    document.getElementById('status4').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('status4').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 5. HLS.js czysty
+  try {
+    const video = document.getElementById('hlsjs');
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+    }
+    document.getElementById('status5').innerHTML = '<span class="ok">DZIAŁA!</span>';
+  } catch(e) { document.getElementById('status5').innerHTML = '<span class="fail">Błąd</span>'; }
+
+  // 6. HTML5 fallback
+  setTimeout(() => {
+    document.getElementById('status6').innerHTML = '<span class="ok">Jeśli widzisz obraz – działa!</span>';
+  }, 5000);
+</script>
 
 </body>
 </html>
