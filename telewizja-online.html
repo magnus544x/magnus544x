@@ -24,38 +24,39 @@
 
   <div class="header">
     <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – NA ŻYWO</h1>
-    <p>150+ kanałów – kliknij i oglądaj od razu</p>
+    <p>150+ kanałów – działa od razu, obraz i dźwięk</p>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
 
   <div class="player-container">
-    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="none" data-setup='{"liveui": true}'></video>
+    <video id="iptv-player" class="video-js vjs-default-skin" controls autoplay muted></video>
   </div>
 
   <div class="channel-list" id="channels">Ładowanie kanałów...</div>
 
-  <!-- Video.js + HLS -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script>
     const player = videojs('iptv-player', {
-      html5: {
-        hls: {
-          overrideNative: true
-        }
-      },
-      liveui: true,
       fluid: true,
-      responsive: true
+      responsive: true,
+      liveui: true,
+      autoplay: true,
+      muted: false,
+      html5: {
+        vhs: {
+          overrideNative: true,
+          withCredentials: false
+        }
+      }
     });
 
-    // Jeśli masz playlist.m3u w repozytorium – używamy go (najlepsze rozwiązanie)
-    // Jeśli nie – używamy proxy
-    const localPlaylist = 'playlist.m3u';  // <-- wrzuć swój plik tutaj!
-    const remotePlaylist = 'https://corsproxy.io/?' + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
+    // Najlepsze: wrzuć swój plik playlist.m3u do repozytorium
+    const local = 'playlist.m3u';
+    const remote = 'https://corsproxy.io/?' + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
 
-    fetch(localPlaylist + '?t=' + Date.now())
-      .then(r => r.ok ? r.text() : fetch(remotePlaylist).then(r => r.text()))
+    fetch(local + '?t=' + Date.now())
+      .then(r => r.ok ? r.text() : fetch(remote).then(r => r.text()))
       .then(text => {
         const lines = text.split('\n');
         const channelDiv = document.getElementById('channels');
@@ -75,33 +76,33 @@
 
             const btn = document.createElement('button');
             btn.textContent = name;
-            btn.onclick = () => playChannel(url, btn);
+            btn.onclick = () => play(url, btn);
             channelDiv.appendChild(btn);
 
             if (first) {
-              playChannel(url, btn);
+              play(url, btn);
               first = false;
             }
           }
         });
       });
 
-    function playChannel(url, button) {
-      // Usuń aktywny styl
+    function play(url, btn) {
       document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
-      button.classList.add('active');
+      btn.classList.add('active');
 
       if (Hls.isSupported()) {
-        const hls = new Hls();
+        const hls = new Hls({enableWorker: true, lowLatencyMode: true});
         hls.loadSource(url);
         hls.attachMedia(player.tech_.el_);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
-      } else {
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          player.play();
+        });
+      } else if (player.tech_.el_.canPlayType('application/x-mpegURL')) {
         player.src({type: 'application/x-mpegURL', src: url});
-        player.ready(() => player.play());
+        player.play();
       }
     }
   </script>
-
 </body>
 </html>
