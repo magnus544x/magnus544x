@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikacja TV - Odtwarzacz Wideo HLS</title>
+    <!-- Ładowanie Tailwind CSS dla nowoczesnego i responsywnego stylu -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Biblioteka hls.js dla odtwarzania strumieni .m3u8 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+    <style>
+        /* Ustawienie czcionki Inter i ciemne tło */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; 
+            color: #e6edf3;
+        }
+        /* Style dla przycisku play/pauza (ikona), dodanie cienia i animacji */
+        .play-icon {
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+            transition: transform 0.15s ease-in-out;
+        }
+        .play-icon:hover {
+            transform: scale(1.1);
+        }
+        /* Styl dla aktywnego kanału */
+        .active-channel {
+            border-left: 4px solid #34d399; /* Zielona linia po lewej */
+        }
+        /* Ukryj wideo, gdy player-area jest aktywne (np. podczas pauzy lub ładowania) */
+        #player-area.bg-gray-700 #video-display {
+            display: none;
+        }
+        /* Pokaż wideo, gdy odtwarzanie jest aktywne */
+        #player-area.bg-black #video-display {
+            display: block;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div id="tv-app" class="max-w-7xl mx-auto rounded-xl shadow-2xl bg-gray-900 overflow-hidden">
+        
+        <!-- NAGŁÓWEK -->
+        <header class="p-4 bg-gray-800 border-b border-gray-700 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-green-400">
+                <span class="text-gray-200">Moje</span> TV
+            </h1>
+            <a href="index.html" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-md transition duration-200">
+                Wróć do menu
+            </a>
+        </header>
+
+        <!-- GŁÓWNA TREŚĆ - Układ DWA KOLUMNY (responsywny) -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-0 h-full">
+
+            <!-- LEWA KOLUMNA: Odtwarzacz Wideo -->
+            <section id="video-player" class="lg:col-span-2 bg-black flex flex-col">
+                
+                <!-- Kontener Wideo z Aspect Ratio 16:9 -->
+                <div class="relative w-full overflow-hidden" style="padding-top: 56.25%;">
+                    <!-- WARSTWA ODTWARZACZA -->
+                    <div id="player-area" class="absolute inset-0 bg-gray-700 flex items-center justify-center transition duration-500">
+                        
+                        <!-- RZECZYWISTY ELEMENT WIDEO -->
+                        <video id="video-display" class="absolute inset-0 w-full h-full object-cover" controls preload="auto" playsinline>
+                            <!-- Źródło wideo zostanie załadowane przez hls.js -->
+                        </video>
+
+                        <!-- WARSTWA INFORMACYJNA (widoczna, gdy wideo jest zatrzymane lub ładowane) -->
+                        <div id="player-info" class="text-center z-10 p-4">
+                            <h2 id="current-channel-name" class="text-xl font-light mb-2 text-gray-200">Kanał: Ładowanie...</h2>
+                            <p id="current-channel-details" class="text-sm text-gray-300 mb-4">Trwa ładowanie listy kanałów...</p>
+                            
+                            <!-- Kontrolka Play/Pauza (SVG Icon) -->
+                            <button id="play-btn" class="text-white focus:outline-none">
+                                <!-- Domyślna ikona Play -->
+                                <svg class="play-icon w-20 h-20 text-green-400 opacity-90" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 6v12l10-6z"/> 
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pasek Kontrolny (Pod Odtwarzaczem) -->
+                <div class="p-4 bg-gray-800 flex flex-wrap justify-between items-center text-sm text-gray-400 border-t border-gray-700">
+                    <div class="flex items-center space-x-4 mb-2 md:mb-0 w-full md:w-auto">
+                        <span id="live-status" class="font-semibold text-white bg-red-600 px-2 py-0.5 rounded-md text-xs">LIVE</span>
+                        <span>00:00:00</span> <!-- Czas będzie aktualizowany przez hls.js/video -->
+                    </div>
+                    <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+                        <button class="hover:text-white transition duration-150">Głośność</button>
+                        <button class="hover:text-white transition duration-150">Napisy</button>
+                        <button class="hover:text-white transition duration-150">Pełny Ekran</button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- PRAWA KOLUMNA: Lista Kanałów/Programów -->
+            <section id="channel-list-container" class="bg-gray-800 border-t lg:border-t-0 lg:border-l border-gray-700 h-96 lg:h-auto overflow-y-auto">
+                <h3 class="p-4 text-lg font-semibold border-b border-gray-700 sticky top-0 bg-gray-800 z-10">
+                    Dostępne Kanały
+                </h3>
+                <!-- Lista kanałów zostanie wygenerowana tutaj przez JS -->
+                <ul id="channels-ul" class="divide-y divide-gray-700">
+                    <!-- Dynamiczne elementy -->
+                </ul>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script>
+        // --- DANE KANAŁÓW (PARSOWANE Z DOSTARCZONEJ PLAYLISTY M3U) ---
+        // Kanały M3U zostały przetworzone na strukturę JSON.
+        
+        const CHANNEL_DATA = [
+            { id: 1, name: "Ttvonline1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/ttvonline1_tvhd1.m3u8" },
+            { id: 2, name: "Tvn", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvn.m3u8" },
+            { id: 3, name: "Polsupers", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polsuper_sdtv.m3u8" },
+            { id: 4, name: "Tvp2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp2_Hdtvts.m3u8" },
+            { id: 5, name: "Tvn24najlepszyt", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvn24najlepszyt.m3u8" },
+            { id: 6, name: "Tvp 1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp_1hdtvd.m3u8" },
+            { id: 7, name: "Pulstv", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/pulstv.m3u8" },
+            { id: 8, name: "Top Kids", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/top_kidstvhdtvhtv2.m3u8" },
+            { id: 9, name: "Czworkatv", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/czworkatv.m3u8" },
+            { id: 10, name: "Tv Serial24", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tv_serial24taws.m3u8" },
+            { id: 11, name: "Tvp", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp_2_hdtteoa.m3u8" },
+            { id: 12, name: "Turbomaniak", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/turbomaniak_tvhd.m3u8" },
+            { id: 13, name: "T7Hd", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/t7hd.m3u8" },
+            { id: 14, name: "Elevenspo1", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/elevenspo1.m3u8" },
+            { id: 15, name: "Polsat Film", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/polsatfilmhdtv.m3u8" },
+            { id: 16, name: "Kino Polska", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/kino_polska_tv.m3u8" },
+            { id: 17, name: "Tvs", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvs_tv2.m3u8" },
+            { id: 18, name: "Sport Tvp", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/sportTVP_channeed.m3u8" },
+            { id: 19, name: "Kissfmuk", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/kissfmuk.m3u8" },
+            { id: 20, name: "Fox", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/fox_hd.m3u8" },
+            { id: 21, name: "Hbo 3 3", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/hbo_3_3.m3u8" },
+            { id: 22, name: "Hd Enkatv", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/hd_enkatv.m3u8" },
+            { id: 23, name: "Psh", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/psh_tv272224.m3u8" },
+            { id: 24, name: "Comedy Central Pl", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/comedycentralpl.m3u8" },
+            { id: 25, name: "Polsat Play", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polsatplay_hd1.m3u8" },
+            { id: 26, name: "Hbochannel2", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/hbochannel2hdtv.m3u8" },
+            { id: 27, name: "Fokus", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/fokus_tv.m3u8" },
+            { id: 28, name: "Kuchennerewolucje", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/kuchennerewolucje.m3u8" },
+            { id: 29, name: "Trujka", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/trujka_pr.m3u8" },
+            { id: 30, name: "Miodowelata", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/miodowelata.m3u8" },
+            { id: 31, name: "Rozrywkatv2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/_rozrywkatv2hd2.m3u8" },
+            { id: 32, name: "Baby", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/baby__tv.m3u8" },
+            { id: 33, name: "Puls", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/puls_.m3u8" },
+            { id: 34, name: "Tv6", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tv6_tvch.m3u8" },
+            { id: 35, name: "Axn", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/axn_hd.m3u8" },
+            { id: 36, name: "Filmy24cz", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/filmy24cz.m3u8" },
+            { id: 37, name: "Cbs Europa", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/cbs_europatvhd2.m3u8" },
+            { id: 38, name: "Nat Geo People", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/nat_geo_peopletvt.m3u8" },
+            { id: 39, name: "Tvnstyleh", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvnstyleh.m3u8" },
+            { id: 40, name: "Hbo3", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/hbo3_hdtv.m3u8" },
+            { id: 41, name: "Polsat 2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polsat_2_tv.m3u8" },
+            { id: 42, name: "Pspremium1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/pspremium1.m3u8" },
+            { id: 43, name: "Jtv6", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/jtv6.m3u8" },
+            { id: 44, name: "Cartoon Network", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/cartoonnetwork_tv.m3u8" },
+            { id: 45, name: "Hbo", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/hbo.m3u8" },
+            { id: 46, name: "Cinemaxxd", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/cinemaxXD.m3u8" },
+            { id: 47, name: "Cpluspremium", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/cpluspremiumtvhd2.m3u8" },
+            { id: 48, name: "Tvp1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/_tvp1HDtvtrq.m3u8" },
+            { id: 49, name: "History", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/history.m3u8" },
+            { id: 50, name: "Nat Geo Wild", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/nat_geo_wild_hd.m3u8" },
+            { id: 51, name: "Polsat Play", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polsat_play_hdtv.m3u8" },
+            { id: 52, name: "Comedy Family", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/comedyfamily_sd.m3u8" },
+            { id: 53, name: "Informacyjny Polska", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/informacyjny_polskatvbba.m3u8" },
+            { id: 54, name: "Stopklatka", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/stopklatka_tv.m3u8" },
+            { id: 55, name: "Disney Xd", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/disney__xd.m3u8" },
+            { id: 56, name: "Tivi Sport", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/TiVi_Sport.m3u8" },
+            { id: 57, name: "Travel Channel", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/travel_channeltvhd.m3u8" },
+            { id: 58, name: "Drhousemd24", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/drhousemd24.m3u8" },
+            { id: 59, name: "Euro Sport", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/euro_sporttvhds13.m3u8" },
+            { id: 60, name: "Superstacja", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/superstacja_tv.m3u8" },
+            { id: 61, name: "Nowa", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/nowa_tvhv.m3u8" },
+            { id: 62, name: "Polsaa4", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/_polsaa4.m3u8" },
+            { id: 63, name: "Eurosport 2", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/eurosport_2_hdtv.m3u8" },
+            { id: 64, name: "Cplus Familijny", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/cplus_familijnyhdtv5.m3u8" },
+            { id: 65, name: "Poltvsat Cinmax", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/poltvsat__cinmax.m3u8" },
+            { id: 66, name: "Tvp Sport", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/tvp_sport_hdtv.m3u8" },
+            { id: 67, name: "Tvp Rozrywka", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/TVP_hdrozrywkatv.m3u8" },
+            { id: 68, name: "Zoom", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/zoom_tv.m3u8" },
+            { id: 69, name: "Filmbox Premium", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/filmbox_premium_hd.m3u8" },
+            { id: 70, name: "Elevensports 123", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/elevensports_123.m3u8" },
+            { id: 71, name: "Planethdd4", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/planethdd4.m3u8" },
+            { id: 72, name: "Disney Junior", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/disney_junior.m3u8" },
+            { id: 73, name: "Cplustfvr3", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/cplustfvr3.m3u8" },
+            { id: 74, name: "4Fun", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/4fun_tv.m3u8" },
+            { id: 75, name: "Klasyka", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/klasykatvh.m3u8" },
+            { id: 76, name: "Wp", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/wp_hd.m3u8" },
+            { id: 77, name: "13 Posterunek", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/13posterunek.m3u8" },
+            { id: 78, name: "Polo", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polo_tv_hd.m3u8" },
+            { id: 79, name: "Polsat Romans", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/polsat_romans.m3u8" },
+            { id: 80, name: "Elevenspo2", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/elevenspo2.m3u8" },
+            { id: 81, name: "Tv4", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tv4_tv.m3u8" },
+            { id: 82, name: "Sport Premium2", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/sport_premium2.m3u8" },
+            { id: 83, name: "Historia", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/historiatv.m3u8" },
+            { id: 84, name: "Nat Geo", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/nat_geo_p.m3u8" },
+            { id: 85, name: "Tvn 248", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvn_248tqa.m3u8" },
+            { id: 86, name: "Zet Gold", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/zet_gold.m3u8" },
+            { id: 87, name: "Rodzinka Pl", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/rodzinkapl.m3u8" },
+            { id: 88, name: "Nickelodeon", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/nickelodeon_.m3u8" },
+            { id: 89, name: "Event", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/event.m3u8" },
+            { id: 90, name: "Archiwumx", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/archiwumx.m3u8" },
+            { id: 91, name: "Miniplus", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/miniplus_hd3.m3u8" },
+            { id: 92, name: "Pspremium2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/pspremium2.m3u8" },
+            { id: 93, name: "Tvp2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp2_tv.m3u8" },
+            { id: 94, name: "Detektywi", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/detektywi.m3u8" },
+            { id: 95, name: "Epic Drama", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/epic_dramahd.m3u8" },
+            { id: 96, name: "Eurosport 1", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/eurosport_1_hd.m3u8" },
+            { id: 97, name: "Ugotowani135", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/ugotowani135.m3u8" },
+            { id: 98, name: "Fightbox", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/fightbox_hd.m3u8" },
+            { id: 99, name: "Bajeczki", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/bajeczki_jhd.m3u8" },
+            { id: 100, name: "Macgyver", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/macgyver.m3u8" },
+            { id: 101, name: "Psp34", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/psp34.m3u8" },
+            { id: 102, name: "Tkino", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/tkinoTVhdhd3.m3u8" },
+            { id: 103, name: "Eska Rock", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/eska_rocktv.m3u8" },
+            { id: 104, name: "13 Ulica", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/13_ulica.m3u8" },
+            { id: 105, name: "Fox Comedy", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/fox_comedy.m3u8" },
+            { id: 106, name: "Filmbox Kino", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/filmbox_kinotv.m3u8" },
+            { id: 107, name: "Puls 2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/puls_2.m3u8" },
+            { id: 108, name: "Tv4", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tv4_.m3u8" },
+            { id: 109, name: "Film Familt", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/film_familt.m3u8" },
+            { id: 110, name: "Puls Zap", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/puls_hd_zap.m3u8" },
+            { id: 111, name: "Tvp1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp1hdtt.m3u8" },
+            { id: 112, name: "Esp2", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/ESP2__HD.m3u8" },
+            { id: 113, name: "Axn Black", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/axn_blacktvhd2.m3u8" },
+            { id: 114, name: "Axn White", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/axn_white_hd.m3u8" },
+            { id: 115, name: "Discovery Historia", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/discovery_historiatv.m3u8" },
+            { id: 116, name: "Psp Hd Sport", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/PSPHD_sporttva.m3u8" },
+            { id: 117, name: "Amc", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/amc__.m3u8" },
+            { id: 118, name: "Bajkizcartoonnetwork", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/bajkizcartoonnetwork.m3u8" },
+            { id: 119, name: "Fightbox", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/fightbox_hd.m3u8" },
+            { id: 120, name: "Esp2Hd", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/ESP2HD.m3u8" },
+            { id: 121, name: "Bajeczki", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/bajeczki_jhd.m3u8" },
+            { id: 122, name: "Disneyxd", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/disneyxd.m3u8" },
+            { id: 123, name: "Axn White", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/axn_white_hd.m3u8" },
+            { id: 124, name: "Film Familt", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/film_familt.m3u8" },
+            { id: 125, name: "Travel Channel", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/travel_channeltvhd.m3u8" },
+            { id: 126, name: "Archiwumx", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/archiwumx.m3u8" },
+            { id: 127, name: "Comedy Family", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/comedyfamily_sd.m3u8" },
+            { id: 128, name: "Puls Zap", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/puls_hd_zap.m3u8" },
+            { id: 129, name: "Detektywi", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/detektywi.m3u8" },
+            { id: 130, name: "Psp34", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/psp34.m3u8" },
+            { id: 131, name: "Psh", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/psh_tv272224.m3u8" },
+            { id: 132, name: "Rodzinka Pl", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/rodzinkapl.m3u8" },
+            { id: 133, name: "Discovery Historia", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/discovery_historiatv.m3u8" },
+            { id: 134, name: "Eskatvmusic", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/eskatvmusic.m3u8" },
+            { id: 135, name: "Macgyver", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/macgyver.m3u8" },
+            { id: 136, name: "Fox Comedy24", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/fox_comedy24tv.m3u8" },
+            { id: 137, name: "Epic Drama", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/epic_dramahd.m3u8" },
+            { id: 138, name: "Cpluspremium", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/cpluspremiumtvhd2.m3u8" },
+            { id: 139, name: "Ugotowani135", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/ugotowani135.m3u8" },
+            { id: 140, name: "Tvp2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp2_tv.m3u8" },
+            { id: 141, name: "Puls 2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/puls_2.m3u8" },
+            { id: 142, name: "Miniplus", details: "Trwa: Bajki dla dzieci", isLive: true, url: "https://security.freefreaks.top/miniplus_hd3.m3u8" },
+            { id: 143, name: "News 2", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/news_2.m3u8" },
+            { id: 144, name: "Filmboxextra", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/filmboxextra_hd1.m3u8" },
+            { id: 145, name: "Historia", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/historiatv.m3u8" },
+            { id: 146, name: "Psp Hd Sport", details: "Trwa: Wydarzenie sportowe", isLive: true, url: "https://security.freefreaks.top/PSPHD_sporttva.m3u8" },
+            { id: 147, name: "Axnblack", details: "Trwa: Hity filmowe", isLive: true, url: "https://security.freefreaks.top/axnblacktvhd2.m3u8" },
+            { id: 148, name: "Tvp1", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tvp1hdtt.m3u8" },
+            { id: 149, name: "Tv4", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/tv4.m3u8" },
+            { id: 150, name: "Amc", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/amc.m3u8" },
+            { id: 151, name: "Domoplus", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/domoplus_tv.m3u8" },
+            { id: 152, name: "Spin Av", details: "Trwa: Serwis informacyjny", isLive: true, url: "https://security.freefreaks.top/spin_av.m3u8" }
+        ];
+
+        // Logika JavaScript do obsługi odtwarzacza i zmiany kanałów
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoDisplay = document.getElementById('video-display');
+            const playerInfo = document.getElementById('player-info');
+            const playButton = document.getElementById('play-btn');
+            const playerArea = document.getElementById('player-area');
+            const channelListUl = document.getElementById('channels-ul');
+            const currentChannelNameDisplay = document.getElementById('current-channel-name');
+            const currentChannelDetailsDisplay = document.getElementById('current-channel-details');
+            const liveStatusSpan = document.getElementById('live-status');
+            
+            let isPlaying = false;
+            let currentChannelId = 1; // Domyślny kanał
+            let hlsInstance = null; // Instancja hls.js
+
+            // --- FUNKCJE HLS ---
+
+            const loadHLSStream = (url) => {
+                // Czyszczenie poprzedniej instancji HLS (konieczne przy zmianie kanału)
+                if (hlsInstance) {
+                    hlsInstance.destroy();
+                    hlsInstance = null;
+                }
+
+                if (Hls.isSupported()) {
+                    hlsInstance = new Hls();
+                    hlsInstance.loadSource(url);
+                    hlsInstance.attachMedia(videoDisplay);
+                    
+                    hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
+                        // Jeśli użytkownik chciał odtwarzać, uruchom wideo
+                        if (isPlaying) {
+                            videoDisplay.play().catch(e => {
+                                console.warn("Nie udało się automatycznie odtworzyć (wymagana interakcja użytkownika):", e);
+                                // Wymuś powrót do stanu pauzy, aby użytkownik mógł kliknąć Play
+                                isPlaying = false;
+                                updatePlayButton(); 
+                            });
+                        }
+                    });
+
+                    hlsInstance.on(Hls.Events.ERROR, (event, data) => {
+                        if (data.fatal) {
+                            console.error("HLS Fatal Error:", data);
+                            currentChannelDetailsDisplay.textContent = `BŁĄD ODTWARZANIA: ${data.reason}. Spróbuj ponownie lub wybierz inny kanał.`;
+                            // Wymuś pauzę i pokaż warstwę informacyjną
+                            isPlaying = false;
+                            updatePlayButton();
+                        }
+                    });
+
+                } else if (videoDisplay.canPlayType('application/vnd.apple.mpegurl')) {
+                    // Natywne wsparcie (Safari/iOS)
+                    videoDisplay.src = url;
+                    videoDisplay.load();
+                    if (isPlaying) videoDisplay.play();
+                } else {
+                    // Całkowity brak wsparcia
+                    currentChannelDetailsDisplay.textContent = "HLS (m3u8) nie jest wspierane przez tę przeglądarkę.";
+                    isPlaying = false;
+                    updatePlayButton();
+                }
+            };
+            
+            // --- FUNKCJE RENDERUJĄCE ---
+
+            // Generuje listę kanałów na podstawie CHANNEL_DATA
+            const renderChannelList = () => {
+                channelListUl.innerHTML = ''; // Czyść starą listę
+                CHANNEL_DATA.forEach(channel => {
+                    const isCurrent = channel.id === currentChannelId;
+                    
+                    const listItem = document.createElement('li');
+                    listItem.dataset.channel = channel.id;
+                    listItem.className = `p-4 hover:bg-gray-700 cursor-pointer transition duration-150 flex justify-between items-center ${isCurrent ? 'active-channel bg-gray-700/50' : ''}`;
+
+                    listItem.innerHTML = `
+                        <div>
+                            <p class="font-semibold ${isCurrent ? 'text-green-400' : ''}">${channel.id}. ${channel.name}</p>
+                            <p class="text-sm text-gray-400">${channel.details}</p>
+                        </div>
+                        ${isCurrent 
+                            ? `<span class="text-xs font-bold text-green-400 border border-green-400 px-2 py-0.5 rounded-full">Oglądasz</span>`
+                            : (channel.isLive 
+                                ? `<span class="text-xs text-red-400">LIVE</span>` 
+                                : ``)
+                        }
+                    `;
+                    channelListUl.appendChild(listItem);
+                });
+            };
+
+            // Aktualizuje wygląd odtwarzacza wideo i źródło wideo
+            const updatePlayerDisplay = () => {
+                const currentChannel = CHANNEL_DATA.find(c => c.id === currentChannelId);
+                if (!currentChannel) {
+                    console.error("Nie znaleziono kanału o ID:", currentChannelId);
+                    return;
+                }
+
+                currentChannelNameDisplay.textContent = `Kanał: ${currentChannel.name}`;
+                currentChannelDetailsDisplay.textContent = currentChannel.details;
+                
+                liveStatusSpan.textContent = currentChannel.isLive ? 'LIVE' : 'REC';
+                liveStatusSpan.classList.toggle('bg-red-600', currentChannel.isLive);
+                liveStatusSpan.classList.toggle('bg-blue-600', !currentChannel.isLive);
+                
+                // Uruchom ładowanie HLS
+                if (currentChannel.url) {
+                    loadHLSStream(currentChannel.url);
+                    playerInfo.classList.remove('hidden'); // Pokaż interfejs info
+                } else {
+                    // Brak dostępnego strumienia
+                    currentChannelDetailsDisplay.textContent = "Brak dostępnego strumienia wideo. Wybierz inny kanał.";
+                    isPlaying = false; 
+                    if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
+                    videoDisplay.src = '';
+                }
+            };
+
+            // Aktualizuje stan przycisku Play/Pauza ORAZ kontroluje element <video>
+            const updatePlayButton = () => {
+                if (isPlaying) {
+                    // Ikona Pauzy
+                    playButton.innerHTML = `
+                        <svg class="play-icon w-20 h-20 text-red-400 opacity-90" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 18h4V6H6v12zm8-12v12h4V6h-4z"/>
+                        </svg>`;
+                    // Włącz wideo
+                    playerArea.classList.add('bg-black');
+                    playerArea.classList.remove('bg-gray-700');
+                    playerInfo.classList.add('hidden'); // Ukryj warstwę informacyjną
+                    
+                    videoDisplay.play().catch(e => {
+                        // To obsłuży błędy autoodtwarzania, jeśli nie zostały złapane przez hls.js
+                        console.warn("Wymagana interakcja użytkownika do odtwarzania:", e);
+                        playerInfo.classList.remove('hidden');
+                    });
+
+                } else {
+                    // Ikona Play
+                    playButton.innerHTML = `
+                        <svg class="play-icon w-20 h-20 text-green-400 opacity-90" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 6v12l10-6z"/>
+                        </svg>`;
+                    // Zatrzymanie wideo
+                    playerArea.classList.remove('bg-black');
+                    playerArea.classList.add('bg-gray-700');
+                    playerInfo.classList.remove('hidden'); // Pokaż warstwę informacyjną
+                    
+                    videoDisplay.pause();
+                }
+            };
+
+            // --- OBSŁUGA ZDARZEŃ ---
+
+            // Obsługa kliknięcia przycisku Play/Pauza
+            playButton.addEventListener('click', () => {
+                const currentChannel = CHANNEL_DATA.find(c => c.id === currentChannelId);
+                
+                if (currentChannel && currentChannel.url) {
+                    isPlaying = !isPlaying;
+                    updatePlayButton();
+                } else {
+                    currentChannelDetailsDisplay.textContent = "Nie można odtwarzać - brak strumienia lub błąd HLS.";
+                }
+            });
+            
+            // Obsługa kliknięcia kanału
+            channelListUl.addEventListener('click', (event) => {
+                const listItem = event.target.closest('li[data-channel]');
+                if (!listItem) return;
+
+                const newChannelId = parseInt(listItem.dataset.channel);
+                if (newChannelId === currentChannelId) return;
+
+                currentChannelId = newChannelId;
+
+                // 1. Zaktualizuj wyświetlanie nazwy kanału i źródła
+                isPlaying = true; // Zawsze próbujemy odtwarzać po zmianie kanału
+                updatePlayerDisplay(); // Spowoduje załadowanie nowego strumienia HLS
+                
+                // 2. Odśwież listę, aby zaktualizować status "Oglądasz"
+                renderChannelList();
+
+                console.log(`Zmieniono kanał na ID: ${currentChannelId}`);
+            });
+
+            // --- INICJALIZACJA ---
+            
+            // Ustaw początkowe dane i wygląd
+            renderChannelList();
+            
+            // Wymuś załadowanie pierwszego kanału przy starcie
+            updatePlayerDisplay();
+            updatePlayButton(); // Uruchomienie odtwarzacza (jeśli autoodtwarzanie się powiedzie)
+        });
+    </script>
+
+</body>
+</html>
