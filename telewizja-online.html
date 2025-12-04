@@ -2,46 +2,61 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – JW PLAYER + DVR</title>
-  <script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+  <title>TELEWIZJA ONLINE – DZIAŁA 100%</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;}
     .header {text-align:center;padding:30px;background:#111;}
-    .header h1 {font-size:44px;margin:0;background:linear-gradient(to right,#ff2d95,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .header h1 {font-size:44px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
     .header a {color:#0ff;font-size:22px;text-decoration:none;}
-    #jwplayer {width:95%;max-width:1300px;height:75vh;margin:30px auto;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
+    .player-container {width:95%;max-width:1300px;margin:30px auto;}
+    #iptv-player {width:100%;height:75vh;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.8);}
     .channel-list {margin:20px auto;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:1300px;padding:0 20px;}
     .channel-list button {
       background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:16px;transition:0.3s;min-width:180px;
     }
-    .channel-list button:hover {background:#ff2d95;color:#fff;}
+    .channel-list button:hover {background:#00ff9d;color:#000;}
     .channel-list button.active {background:#00ff9d;color:#000;font-weight:bold;}
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – JW PLAYER + DVR</h1>
-    <p>150+ kanałów • Przewijanie wstecz • Najlepsza jakość</p>
+    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
+    <p>150+ kanałów – obraz i dźwięk od razu</p>
     <a href="index.html"><i class="fas fa-arrow-left"></i> Powrót do strony głównej</a>
   </div>
 
-  <div id="jwplayer"></div>
+  <div class="player-container">
+    <video id="iptv-player" class="video-js vjs-default-skin" controls preload="none" data-setup='{"liveui": true}'></video>
+  </div>
 
-  <div class="channel-list" id="channels">Ładowanie kanałów...</div>
+  <div class="channel-list" id="channels">Ładowanie kanałów z Twojego pliku playlist.m3u...</div>
 
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
   <script>
-    let playerInstance;
+    const player = videojs('iptv-player', {
+      fluid: true,
+      responsive: true,
+      liveui: true,
+      autoplay: true,
+      html5: {
+        vhs: {
+          overrideNative: true
+        }
+      }
+    });
 
-    const playlistUrl = 'https://security.freefreaks.top/playlist.m3u';
+    let hls;
 
-    fetch(playlistUrl + '?t=' + Date.now())
+    // Pobieramy playlistę z Twojego repozytorium (zero CORS!)
+    fetch('playlist.m3u?t=' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const container = document.getElementById('channels');
-        container.innerHTML = '';
+        const channelDiv = document.getElementById('channels');
+        channelDiv.innerHTML = '';
 
         let url = '';
         let name = 'Kanał';
@@ -57,46 +72,32 @@
 
             const btn = document.createElement('button');
             btn.textContent = name;
-            btn.onclick = () => loadChannel(url, name, btn);
-            container.appendChild(btn);
+            btn.onclick = () => loadChannel(url, btn);
+            channelDiv.appendChild(btn);
 
             if (first) {
-              loadChannel(url, name, btn);
+              loadChannel(url, btn);
               first = false;
             }
           }
         });
       });
 
-    function loadChannel(streamUrl, channelName, btn) {
+    function loadChannel(url, btn) {
       document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      if (playerInstance) playerInstance.remove();
+      if (hls) hls.destroy();
 
-      playerInstance = jwplayer("jwplayer").setup({
-        file: streamUrl,
-        title: channelName,
-        width: "100%",
-        height: "100%",
-        autostart: true,
-        stretching: "uniform",
-        displaytitle: true,
-        displaydescription: true,
-        abouttext: "DARMOWE TV",
-        aboutlink: "https://moje-kanaly.vercel.app",
-        // DVR – przewijanie wstecz (działa na większości streamów)
-        hlsjsConfig: {
-          enableWorker: true,
-          xhrSetup: function(xhr, url) {
-            xhr.withCredentials = false;
-          }
-        }
-      });
-
-      playerInstance.on('error', () => {
-        document.getElementById('channels').innerHTML += `<p style="color:red;">Błąd kanału – spróbuj inny</p>`;
-      });
+      if (Hls.isSupported()) {
+        hls = new Hls({enableWorker: true, lowLatencyMode: true});
+        hls.loadSource(url);
+        hls.attachMedia(player.tech_.el_);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
+      } else {
+        player.src({type: 'application/x-mpegURL', src: url});
+        player.play();
+      }
     }
   </script>
 
