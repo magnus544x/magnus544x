@@ -7,55 +7,33 @@
   <style>
     body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;text-align:center;}
     h1 {margin-bottom:20px;}
-    #channels {
-      display:inline-block;
-      background:#111;
-      padding:15px;
-      border:1px solid #444;
-      max-height:600px;
-      overflow-y:auto;
-      text-align:left;
-      min-width:300px;
-    }
-    #channels button {
-      display:block;
-      width:100%;
-      padding:12px;
-      margin:5px 0;
-      background:#222;
-      border:none;
-      color:#fff;
-      cursor:pointer;
-      font-size:15px;
-    }
-    #channels button:hover {background:#444;}
-    .container {display:flex;flex-wrap:wrap;gap:20px;justify-content:center;align-items:flex-start;}
-    video {max-width:100%;}
+    .channel {margin:20px 0;}
+    .channel h3 {cursor:pointer;color:#ccc;}
+    .channel h3:hover {color:#fff;}
+    video {display:none; max-width:100%; margin-top:10px;}
+    video.active {display:block;}
   </style>
 </head>
 <body>
   <h1>Moje Kanały TV</h1>
-  <div class="container">
-    <div id="channels">Ładowanie kanałów...</div>
-    <video id="player" class="video-js vjs-default-skin" controls preload="auto" width="900" height="506"></video>
-  </div>
+  <div id="channels"></div>
 
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const proxy = 'https://corsproxy.io/?';
     const m3uUrl = proxy + encodeURIComponent('https://security.freefreaks.top/playlist.m3u');
-    let player = videojs('player', {fluid: true});
+    let players = {};
 
     function loadPlaylist() {
-      document.getElementById('channels').innerHTML = '<button onclick="loadPlaylist()">🔄 Odśwież listę</button><br><br>Ładowanie...';
+      document.getElementById('channels').innerHTML = 'Ładowanie...';
       fetch(m3uUrl + '&t=' + Date.now())
         .then(r => r.text())
         .then(text => {
           const lines = text.split('\n');
           const div = document.getElementById('channels');
-          div.innerHTML = '<button onclick="loadPlaylist()">🔄 Odśwież listę</button><br><br>';
+          div.innerHTML = '';
           let name = 'Nieznany';
-          let count = 0;
+          let url = '';
 
           for (let line of lines) {
             line = line.trim();
@@ -63,25 +41,38 @@
               const match = line.match(/tvg-name="([^"]+)"/);
               name = match ? match[1] : line.split(',').pop();
             } else if (line && line.includes('.m3u8')) {
-              const btn = document.createElement('button');
-              btn.textContent = name;
-              btn.onclick = () => {
-                player.src({src: line, type: 'application/x-mpegURL'});
-                player.ready(() => player.play());
-              };
-              div.appendChild(btn);
-              count++;
+              url = line;
+              const channelDiv = document.createElement('div');
+              channelDiv.className = 'channel';
+              channelDiv.innerHTML = `<h3 onclick="togglePlayer('${name.replace(/'/g, "\\'")}')">${name}</h3>`;
+              const videoId = name.replace(/[^a-zA-Z0-9]/g, '_');
+              channelDiv.innerHTML += `<video id="player_${videoId}" class="video-js" controls preload="auto" width="900" height="506" data-setup='{}'></video>`;
+              div.appendChild(channelDiv);
+              players[videoId] = videojs(`player_${videoId}`, {fluid: true});
+              players[videoId].src({src: url, type: 'application/x-mpegURL'});
+              url = '';
             }
           }
-          if (count === 0) div.innerHTML += '<p>Brak kanałów – spróbuj później.</p>';
         })
-        .catch(err => {
-          document.getElementById('channels').innerHTML += '<p style="color:red;">Błąd: ' + err + '</p>';
-        });
+        .catch(err => document.getElementById('channels').innerHTML = '<p>Błąd: ' + err + '</p>');
+    }
+
+    function togglePlayer(name) {
+      const videoId = name.replace(/[^a-zA-Z0-9]/g, '_');
+      Object.keys(players).forEach(id => {
+        const v = document.getElementById('player_' + id);
+        if (v) v.classList.remove('active');
+        players[id].pause();
+      });
+      const activeV = document.getElementById('player_' + videoId);
+      if (activeV) {
+        activeV.classList.add('active');
+        players[videoId].play();
+      }
     }
 
     loadPlaylist();
-    setInterval(loadPlaylist, 4 * 60 * 60 * 1000); // co 4 godziny
+    setInterval(loadPlaylist, 4 * 60 * 60 * 1000);
   </script>
 </body>
 </html>
