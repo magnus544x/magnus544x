@@ -2,99 +2,145 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>TELEWIZJA ONLINE – DZIAŁA 100% (z Twojego GitHub)</title>
+  <title>MEGA TEST IPTV – TWOJA + FREE-TV</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
-    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:0;overflow:hidden;}
-    .header {text-align:center;padding:15px;background:#111;position:fixed;top:0;width:100%;z-index:1000;}
-    .header h1 {font-size:32px;margin:0;background:linear-gradient(to right,#00ff9d,#ff2d95);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    .header a {color:#0ff;font-size:18px;text-decoration:none;}
-    #iptv-player {width:100vw;height:100vh;background:#000;}
-    .channel-list {position:fixed;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.9);padding:10px 0;overflow-x:auto;z-index:1000;display:flex;gap:10px;justify-content:flex-start;}
-    .channel-list button {background:#222;color:#fff;padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:15px;min-width:160px;white-space:nowrap;}
-    .channel-list button:hover {background:#00ff9d;color:#000;}
-    .channel-list button.active {background:#00ff9d;color:#000;font-weight:bold;}
+    body {background:#000;color:#fff;font-family:Arial;margin:0;padding:20px;}
+    h1 {text-align:center;color:#0f0;font-size:40px;margin:30px 0;}
+    .playlist {margin:40px 0;background:#111;padding:20px;border-radius:15px;}
+    .playlist h2 {color:#ff2d95;text-align:center;}
+    .players {display:grid;grid-template-columns:repeat(auto-fit,minmax(500px,1fr));gap:20px;}
+    .player-box {background:#222;padding:15px;border-radius:10px;text-align:center;}
+    .player-box h3 {color:#00ff9d;margin:0 0 10px;}
+    video, div[id^="jw"], div[id^="flus"] {width:100%;height:400px;background:#000;border-radius:8px;}
+    .status {margin-top:10px;font-size:16px;}
+    .ok {color:#0f0;}
+    .fail {color:#f00;}
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1><i class="fas fa-play-circle"></i> TELEWIZJA ONLINE – DZIAŁA 100%</h1>
-    <a href="index.html"><i class="fas fa-home"></i> Strona główna</a>
+<h1>MEGA TEST IPTV – TWOJA PLAYLISTA + FREE-TV</h1>
+<p style="text-align:center;font-size:22px;">Test na 7 playerach – zobacz, co działa</p>
+<a href="index.html" style="display:block;text-align:center;color:#0ff;font-size:20px;margin:20px;">← Powrót do strony głównej</a>
+
+<!-- TWOJA PLAYLISTA Z GITHUB -->
+<div class="playlist">
+  <h2>1. TWOJA PLAYLISTA (z GitHub)</h2>
+  <div class="players">
+    <div class="player-box"><h3>JW Player</h3><div id="jw1"></div><div class="status" id="s11">Ładowanie...</div></div>
+    <div class="player-box"><h3>Flussonic</h3><div id="flus1"></div><div class="status" id="s21">Ładowanie...</div></div>
+    <div class="player-box"><h3>Video.js</h3><video id="vjs1" class="video-js"></video><div class="status" id="s31">Ładowanie...</div></div>
+    <div class="player-box"><h3>Plyr</h3><video id="plyr1"></video><div class="status" id="s41">Ładowanie...</div></div>
+    <div class="player-box"><h3>HLS.js</h3><video id="hls1" controls></video><div class="status" id="s51">Ładowanie...</div></div>
+    <div class="player-box"><h3>HTML5</h3><video id="html1" controls></video><div class="status" id="s61">Ładowanie...</div></div>
+    <div class="player-box"><h3>Castr</h3><div id="castr1"></div><div class="status" id="s71">Ładowanie...</div></div>
   </div>
+</div>
 
-  <video id="iptv-player" class="video-js vjs-default-skin" controls autoplay playsinline></video>
+<!-- FREE-TV PLAYLISTA -->
+<div class="playlist">
+  <h2>2. FREE-TV/IPTV (z GitHub Free-TV)</h2>
+  <p>Free TV channels from the world (Plex, Pluto, Roku, Samsung TV Plus)</p>
+  <div class="players">
+    <div class="player-box"><h3>JW Player</h3><div id="jw2"></div><div class="status" id="s12">Ładowanie...</div></div>
+    <div class="player-box"><h3>Flussonic</h3><div id="flus2"></div><div class="status" id="s22">Ładowanie...</div></div>
+    <div class="player-box"><h3>Video.js</h3><video id="vjs2" class="video-js"></video><div class="status" id="s32">Ładowanie...</div></div>
+    <div class="player-box"><h3>Plyr</h3><video id="plyr2"></video><div class="status" id="s42">Ładowanie...</div></div>
+    <div class="player-box"><h3>HLS.js</h3><video id="hls2" controls></video><div class="status" id="s52">Ładowanie...</div></div>
+    <div class="player-box"><h3>HTML5</h3><video id="html2" controls></video><div class="status" id="s62">Ładowanie...</div></div>
+    <div class="player-box"><h3>Castr</h3><div id="castr2"></div><div class="status" id="s72">Ładowanie...</div></div>
+  </div>
+</div>
 
-  <div class="channel-list" id="channels">Ładowanie kanałów z Twojego GitHub...</div>
+<script src="https://cdn.jwplayer.com/libraries/IDzF9Zmk.js"></script>
+<script src="https://flussonic.com/public/player/v2/player.js"></script>
+<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
+<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+<script src="https://castr.com/hlsplayer/js/player.js"></script>
 
-  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
-  <script>
-    const player = videojs('iptv-player', {
-      fluid: true,
-      responsive: true,
-      liveui: true,
-      autoplay: true,
-      html5: { vhs: { overrideNative: true } }
-    });
-
-    let hls;
-
-    function play(url, btn) {
-      document.querySelectorAll('.channel-list button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      if (hls) hls.destroy();
-
-      if (Hls.isSupported()) {
-        hls = new Hls({ enableWorker: true, lowLatencyMode: true });
-        hls.loadSource(url);
-        hls.attachMedia(player.tech_.el_);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => player.play());
-      } else {
-        player.src({ type: 'application/x-mpegURL', src: url });
-        player.play();
-      }
-    }
-
-    // TWOJA PLAYLISTA Z GITHUB (prawidłowy link raw)
-    const githubRawUrl = 'https://security.freefreaks.top/playlist.m3u';
-
-    fetch(githubRawUrl + '?t=' + Date.now())
+<script>
+  // Funkcja testu dla jednej playlisty
+  function testPlaylist(url, prefix) {
+    fetch(url + '?t=' + Date.now())
       .then(r => r.text())
       .then(text => {
         const lines = text.split('\n');
-        const div = document.getElementById('channels');
-        div.innerHTML = '';
-
-        let url = '';
-        let name = 'Kanał';
-        let first = true;
-
+        let firstUrl = '';
         lines.forEach(line => {
           line = line.trim();
-          if (line.startsWith('#EXTINF:')) {
-            const m = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-            name = m ? m[1].trim() : 'Kanał';
-          } else if (line && line.includes('.m3u8')) {
-            url = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
-
-            const btn = document.createElement('button');
-            btn.textContent = name;
-            btn.onclick = () => play(url, btn);
-            div.appendChild(btn);
-
-            if (first) {
-              btn.classList.add('active');
-              play(url, btn);
-              first = false;
-            }
+          if (line.includes('.m3u8')) {
+            firstUrl = line.startsWith('http') ? line : 'https://security.freefreaks.top/' + line;
+            return;
           }
         });
-      })
-      .catch(() => {
-        document.getElementById('channels').innerHTML = '<p style="color:red;">Błąd – odśwież stronę</p>';
+
+        // Test JW Player
+        try {
+          jwplayer(prefix + 'jw').setup({file: firstUrl, width: "100%", height: "400", autostart: true});
+          document.getElementById(prefix + 's1').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's1').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test Flussonic
+        try {
+          new FlussonicPlayer('#' + prefix + 'flus', {url: firstUrl, autoplay: true});
+          document.getElementById(prefix + 's2').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's2').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test Video.js
+        try {
+          const vjs = videojs(prefix + 'vjs', {fluid: true, liveui: true});
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(firstUrl);
+            hls.attachMedia(vjs.tech_.el_);
+          }
+          document.getElementById(prefix + 's3').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's3').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test Plyr
+        try {
+          new Plyr('#' + prefix + 'plyr', {autoplay: true});
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(firstUrl);
+            hls.attachMedia(document.getElementById(prefix + 'plyr'));
+          }
+          document.getElementById(prefix + 's4').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's4').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test HLS.js
+        try {
+          const video = document.getElementById(prefix + 'hls');
+          if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(firstUrl);
+            hls.attachMedia(video);
+          }
+          document.getElementById(prefix + 's5').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's5').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test HTML5
+        try {
+          document.getElementById(prefix + 'html').src = firstUrl;
+          document.getElementById(prefix + 's6').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's6').innerHTML = '<span class="fail">BŁĄD</span>'; }
+
+        // Test Castr
+        try {
+          new CastrPlayer('#' + prefix + 'castr', {url: firstUrl, autoplay: true});
+          document.getElementById(prefix + 's7').innerHTML = '<span class="ok">DZIAŁA</span>';
+        } catch(e) { document.getElementById(prefix + 's7').innerHTML = '<span class="fail">BŁĄD</span>'; }
       });
-  </script>
+  }
+
+  // Test Twojej playlisty
+  testPlaylist('playlist.m3u', '1_');
+
+  // Test Free-TV playlisty
+  testPlaylist('https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8', '2_');
+</script>
+
 </body>
 </html>
