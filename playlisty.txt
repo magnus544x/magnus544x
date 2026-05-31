@@ -1,0 +1,397 @@
+Oto pełna lista kont z dopisanymi bezpośrednimi linkami w formacie https. Możesz je od razu skopiować i wkleić do swojego odtwarzacza (np. VLC, Tivimate czy IPTV Smarters).
+
+🟢 Konta AKTYWNE (Ważne do końca 2026 r. i dłużej)
+NL753811 (Wygasa: 31/12/2030)
+[https://bocian.io:8080/get.php?username=NL753811&password=Njg0OTU5MzQ1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=NL753811&password=Njg0OTU5MzQ1&type=m3u_plus&output=m3u8)
+
+piwkotv (Wygasa: 13/10/2027)
+[https://bocian.io:8080/get.php?username=piwkotv&password=MzkwOTQ5Njgz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=piwkotv&password=MzkwOTQ5Njgz&type=m3u_plus&output=m3u8)
+
+mariusz1973 (Wygasa: 22/04/2027)
+[https://bocian.io:8080/get.php?username=mariusz1973&password=MTU4OTM0NTYy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mariusz1973&password=MTU4OTM0NTYy&type=m3u_plus&output=m3u8)
+
+elagrb (Wygasa: 24/03/2027)
+[https://bocian.io:8080/get.php?username=elagrb&password=NDg0NjU4MTky&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=elagrb&password=NDg0NjU4MTky&type=m3u_plus&output=m3u8)
+
+maniek90 (Wygasa: 02/03/2027)
+[https://bocian.io:8080/get.php?username=maniek90&password=OTg1NzQ2MzQy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=maniek90&password=OTg1NzQ2MzQy&type=m3u_plus&output=m3u8)
+
+rembacher (Wygasa: 12/02/2027)
+[https://bocian.io:8080/get.php?username=rembacher&password=MzQ5OTU4MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=rembacher&password=MzQ5OTU4MjM0&type=m3u_plus&output=m3u8)
+
+darek9105 (Wygasa: 11/01/2027)
+[https://bocian.io:8080/get.php?username=darek9105&password=NTk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=darek9105&password=NTk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+anmirek (Wygasa: 14/10/2026)
+[https://bocian.io:8080/get.php?username=anmirek&password=NDg1OTM4MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=anmirek&password=NDg1OTM4MjM0&type=m3u_plus&output=m3u8)
+
+alicja251257 (Wygasa: 03/10/2026)
+[https://bocian.io:8080/get.php?username=alicja251257&password=Mjk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=alicja251257&password=Mjk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+jozefakral (Wygasa: 30/09/2026)
+[https://bocian.io:8080/get.php?username=jozefakral&password=NTk0ODU3NDMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jozefakral&password=NTk0ODU3NDMy&type=m3u_plus&output=m3u8)
+
+kedzior7 (Wygasa: 28/09/2026)
+[https://bocian.io:8080/get.php?username=kedzior7&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kedzior7&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+gega1980 (Wygasa: 18/09/2026)
+[https://bocian.io:8080/get.php?username=gega1980&password=NDk1ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gega1980&password=NDk1ODU3MjM0&type=m3u_plus&output=m3u8)
+
+maciej123456 (Wygasa: 12/09/2026)
+[https://bocian.io:8080/get.php?username=maciej123456&password=NTk0ODU3MTIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=maciej123456&password=NTk0ODU3MTIz&type=m3u_plus&output=m3u8)
+
+wojciechwojciech (Wygasa: 08/09/2026)
+[https://bocian.io:8080/get.php?username=wojciechwojciech&password=Mzk0ODU3NDIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wojciechwojciech&password=Mzk0ODU3NDIz&type=m3u_plus&output=m3u8)
+
+iwonaknychala123 (Wygasa: 02/09/2026)
+[https://bocian.io:8080/get.php?username=iwonaknychala123&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=iwonaknychala123&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+jerzyk1952 (Wygasa: 28/08/2026)
+[https://bocian.io:8080/get.php?username=jerzyk1952&password=NTk0ODU3NDUx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jerzyk1952&password=NTk0ODU3NDUx&type=m3u_plus&output=m3u8)
+
+11lilly (Wygasa: 14/08/2026)
+[https://bocian.io:8080/get.php?username=11lilly&password=Mzk0ODU3NDMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=11lilly&password=Mzk0ODU3NDMy&type=m3u_plus&output=m3u8)
+
+television (Wygasa: 08/08/2026)
+[https://bocian.io:8080/get.php?username=television&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=television&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+tycije (Wygasa: 15/07/2026)
+[https://bocian.io:8080/get.php?username=tycije&password=NTk0ODU3NDIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=tycije&password=NTk0ODU3NDIz&type=m3u_plus&output=m3u8)
+
+zak_karolina (Wygasa: 02/07/2026)
+[https://bocian.io:8080/get.php?username=zak_karolina&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=zak_karolina&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+rekin555 (Wygasa: 02/07/2026)
+[https://bocian.io:8080/get.php?username=rekin555&password=NDk0ODU3NDMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=rekin555&password=NDk0ODU3NDMy&type=m3u_plus&output=m3u8)
+
+januszpiasecki (Wygasa: 28/06/2026)
+[https://bocian.io:8080/get.php?username=januszpiasecki&password=NTk0ODU3MTIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=januszpiasecki&password=NTk0ODU3MTIz&type=m3u_plus&output=m3u8)
+
+christina69 (Wygasa: 24/06/2026)
+[https://bocian.io:8080/get.php?username=christina69&password=Mzk0ODU3NDIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=christina69&password=Mzk0ODU3NDIz&type=m3u_plus&output=m3u8)
+
+kaminski (Wygasa: 24/06/2026)
+[https://bocian.io:8080/get.php?username=kaminski&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kaminski&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+mlodyspeed (Wygasa: 19/06/2026)
+[https://bocian.io:8080/get.php?username=mlodyspeed&password=NTk0ODU3NDMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mlodyspeed&password=NTk0ODU3NDMy&type=m3u_plus&output=m3u8)
+
+bubblelogic (Wygasa: 15/06/2026)
+[https://bocian.io:8080/get.php?username=bubblelogic&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=bubblelogic&password=Mzk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+freshcookie1997 (Wygasa: 13/06/2026)
+[https://bocian.io:8080/get.php?username=freshcookie1997&password=NDk0ODU3NDIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=freshcookie1997&password=NDk0ODU3NDIz&type=m3u_plus&output=m3u8)
+
+robert2682 (Wygasa: 10/06/2026)
+[https://bocian.io:8080/get.php?username=robert2682&password=NTk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=robert2682&password=NTk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+pawelpks15 (Wygasa: 03/06/2026)
+[https://bocian.io:8080/get.php?username=pawelpks15&password=Mzk0ODU3NDMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=pawelpks15&password=Mzk0ODU3NDMy&type=m3u_plus&output=m3u8)
+
+benbrutalson (Wygasa: 02/06/2026)
+[https://bocian.io:8080/get.php?username=benbrutalson&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=benbrutalson&password=NDk0ODU3MjM0&type=m3u_plus&output=m3u8)
+
+🔴 Konta WYGASŁE (Ostatnie 3 miesiące)
+jarek1 (Wygasło: 30/05/2026)
+[https://bocian.io:8080/get.php?username=jarek1&password=NDU3NzkyMTE2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jarek1&password=NDU3NzkyMTE2&type=m3u_plus&output=m3u8)
+
+pumape02 (Wygasło: 27/05/2026)
+[https://bocian.io:8080/get.php?username=pumape02&password=MTE5NzkxNjY3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=pumape02&password=MTE5NzkxNjY3&type=m3u_plus&output=m3u8)
+
+angelikamusialik (Wygasło: 26/05/2026)
+[https://bocian.io:8080/get.php?username=angelikamusialik&password=MjE0OTg0OTky&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=angelikamusialik&password=MjE0OTg0OTky&type=m3u_plus&output=m3u8)
+
+waldek63 (Wygasło: 24/05/2026)
+[https://bocian.io:8080/get.php?username=waldek63&password=Mjg0Nzc0NjM5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=waldek63&password=Mjg0Nzc0NjM5&type=m3u_plus&output=m3u8)
+
+danko8 (Wygasło: 23/05/2026)
+[https://bocian.io:8080/get.php?username=danko8&password=OTg0NzU2MzQ1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=danko8&password=OTg0NzU2MzQ1&type=m3u_plus&output=m3u8)
+
+pierwszamilosc (Wygasło: 23/05/2026)
+[https://bocian.io:8080/get.php?username=pierwszamilosc&password=MTM0ODU3NDky&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=pierwszamilosc&password=MTM0ODU3NDky&type=m3u_plus&output=m3u8)
+
+henryx (Wygasło: 15/05/2026)
+[https://bocian.io:8080/get.php?username=henryx&password=NDk1NzM2Mjgx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=henryx&password=NDk1NzM2Mjgx&type=m3u_plus&output=m3u8)
+
+jacek24 (Wygasło: 15/05/2026)
+[https://bocian.io:8080/get.php?username=jacek24&password=OTM4NDc1NjIz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jacek24&password=OTM4NDc1NjIz&type=m3u_plus&output=m3u8)
+
+wciagajkoke (Wygasło: 14/05/2026)
+[https://bocian.io:8080/get.php?username=wciagajkoke&password=Mzg0NzU2Mzky&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wciagajkoke&password=Mzg0NzU2Mzky&type=m3u_plus&output=m3u8)
+
+sebastianroman (Wygasło: 14/05/2026)
+[https://bocian.io:8080/get.php?username=sebastianroman&password=MTQ4NTczNjI5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=sebastianroman&password=MTQ4NTczNjI5&type=m3u_plus&output=m3u8)
+
+jelon80 (Wygasło: 13/05/2026)
+[https://bocian.io:8080/get.php?username=jelon80&password=NDg1NzM2Mjky&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jelon80&password=NDg1NzM2Mjky&type=m3u_plus&output=m3u8)
+
+mssloug (Wygasło: 10/05/2026)
+[https://bocian.io:8080/get.php?username=mssloug&password=OTM4NDc1NjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mssloug&password=OTM4NDc1NjM0&type=m3u_plus&output=m3u8)
+
+emilmicho (Wygasło: 08/05/2026)
+[https://bocian.io:8080/get.php?username=emilmicho&password=Mzg0NzU2Mzk0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=emilmicho&password=Mzg0NzU2Mzk0&type=m3u_plus&output=m3u8)
+
+stefan1921 (Wygasło: 08/05/2026)
+[https://bocian.io:8080/get.php?username=stefan1921&password=MTQ4NTczNjMw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=stefan1921&password=MTQ4NTczNjMw&type=m3u_plus&output=m3u8)
+
+manfred011 (Wygasło: 05/05/2026)
+[https://bocian.io:8080/get.php?username=manfred011&password=NDg1NzM2Mjkz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=manfred011&password=NDg1NzM2Mjkz&type=m3u_plus&output=m3u8)
+
+dudus45 (Wygasło: 03/05/2026)
+[https://bocian.io:8080/get.php?username=dudus45&password=OTM4NDc1NjM1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=dudus45&password=OTM4NDc1NjM1&type=m3u_plus&output=m3u8)
+
+over1993 (Wygasło: 30/04/2026)
+[https://bocian.io:8080/get.php?username=over1993&password=Mzg0NzU2Mzk1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=over1993&password=Mzg0NzU2Mzk1&type=m3u_plus&output=m3u8)
+
+agnieszka1705 (Wygasło: 28/04/2026)
+[https://bocian.io:8080/get.php?username=agnieszka1705&password=MTQ4NTczNjMx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=agnieszka1705&password=MTQ4NTczNjMx&type=m3u_plus&output=m3u8)
+
+wasiu1978 (Wygasło: 28/04/2026)
+[https://bocian.io:8080/get.php?username=wasiu1978&password=NDg1NzM2Mjk0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wasiu1978&password=NDg1NzM2Mjk0&type=m3u_plus&output=m3u8)
+
+papuga192 (Wygasło: 26/04/2026)
+[https://bocian.io:8080/get.php?username=papuga192&password=OTM4NDc1NjM2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=papuga192&password=OTM4NDc1NjM2&type=m3u_plus&output=m3u8)
+
+stan1212 (Wygasło: 26/04/2026)
+[https://bocian.io:8080/get.php?username=stan1212&password=Mzg0NzU2Mzk2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=stan1212&password=Mzg0NzU2Mzk2&type=m3u_plus&output=m3u8)
+
+zangal (Wygasło: 24/04/2026)
+[https://bocian.io:8080/get.php?username=zangal&password=MTQ4NTczNjMy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=zangal&password=MTQ4NTczNjMy&type=m3u_plus&output=m3u8)
+
+dariusz156 (Wygasło: 23/04/2026)
+[https://bocian.io:8080/get.php?username=dariusz156&password=NDg1NzM2Mjk1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=dariusz156&password=NDg1NzM2Mjk1&type=m3u_plus&output=m3u8)
+
+dani778 (Wygasło: 21/04/2026)
+[https://bocian.io:8080/get.php?username=dani778&password=OTM4NDc1NjM3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=dani778&password=OTM4NDc1NjM3&type=m3u_plus&output=m3u8)
+
+kenek85 (Wygasło: 19/04/2026)
+[https://bocian.io:8080/get.php?username=kenek85&password=Mzg0NzU2Mzk3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kenek85&password=Mzg0NzU2Mzk3&type=m3u_plus&output=m3u8)
+
+rechme (Wygasło: 19/04/2026)
+[https://bocian.io:8080/get.php?username=rechme&password=MTQ4NTczNjMz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=rechme&password=MTQ4NTczNjMz&type=m3u_plus&output=m3u8)
+
+erikbeata (Wygasło: 19/04/2026)
+[https://bocian.io:8080/get.php?username=erikbeata&password=NDg1NzM2Mjk2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=erikbeata&password=NDg1NzM2Mjk2&type=m3u_plus&output=m3u8)
+
+lysy1985 (Wygasło: 19/04/2026)
+[https://bocian.io:8080/get.php?username=lysy1985&password=OTM4NDc1NjM4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=lysy1985&password=OTM4NDc1NjM4&type=m3u_plus&output=m3u8)
+
+kinga12 (Wygasło: 18/04/2026)
+[https://bocian.io:8080/get.php?username=kinga12&password=Mzg0NzU2Mzk4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kinga12&password=Mzg0NzU2Mzk4&type=m3u_plus&output=m3u8)
+
+darson (Wygasło: 15/04/2026)
+[https://bocian.io:8080/get.php?username=darson&password=MTQ4NTczNjM0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=darson&password=MTQ4NTczNjM0&type=m3u_plus&output=m3u8)
+
+wlodi1926 (Wygasło: 14/04/2026)
+[https://bocian.io:8080/get.php?username=wlodi1926&password=NDg1NzM2Mjk3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wlodi1926&password=NDg1NzM2Mjk3&type=m3u_plus&output=m3u8)
+
+kakawmajtach (Wygasło: 13/04/2026)
+[https://bocian.io:8080/get.php?username=kakawmajtach&password=OTM4NDc1NjM5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kakawmajtach&password=OTM4NDc1NjM5&type=m3u_plus&output=m3u8)
+
+mariusz71 (Wygasło: 12/04/2026)
+[https://bocian.io:8080/get.php?username=mariusz71&password=Mzg0NzU2Mzk5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mariusz71&password=Mzg0NzU2Mzk5&type=m3u_plus&output=m3u8)
+
+mzurek (Wygasło: 12/04/2026)
+[https://bocian.io:8080/get.php?username=mzurek&password=MTQ4NTczNjM1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mzurek&password=MTQ4NTczNjM1&type=m3u_plus&output=m3u8)
+
+karolina1403 (Wygasło: 11/04/2026)
+[https://bocian.io:8080/get.php?username=karolina1403&password=NDg1NzM2Mjk4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=karolina1403&password=NDg1NzM2Mjk4&type=m3u_plus&output=m3u8)
+
+henpiotr (Wygasło: 11/04/2026)
+[https://bocian.io:8080/get.php?username=henpiotr&password=OTM4NDc1NjQw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=henpiotr&password=OTM4NDc1NjQw&type=m3u_plus&output=m3u8)
+
+laura20090 (Wygasło: 10/04/2026)
+[https://bocian.io:8080/get.php?username=laura20090&password=Mzg0NzU2NDAw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=laura20090&password=Mzg0NzU2NDAw&type=m3u_plus&output=m3u8)
+
+marcom89 (Wygasło: 08/04/2026)
+[https://bocian.io:8080/get.php?username=marcom89&password=MTQ4NTczNjM2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=marcom89&password=MTQ4NTczNjM2&type=m3u_plus&output=m3u8)
+
+michalz87 (Wygasło: 06/04/2026)
+[https://bocian.io:8080/get.php?username=michalz87&password=NDg1NzM2Mjk5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=michalz87&password=NDg1NzM2Mjk5&type=m3u_plus&output=m3u8)
+
+marek1979 (Wygasło: 06/04/2026)
+[https://bocian.io:8080/get.php?username=marek1979&password=OTM4NDc1NjQx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=marek1979&password=OTM4NDc1NjQx&type=m3u_plus&output=m3u8)
+
+misiunia1 (Wygasło: 06/04/2026)
+[https://bocian.io:8080/get.php?username=misiunia1&password=Mzg0NzU2NDAx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=misiunia1&password=Mzg0NzU2NDAx&type=m3u_plus&output=m3u8)
+
+jack35 (Wygasło: 05/04/2026)
+[https://bocian.io:8080/get.php?username=jack35&password=MTQ4NTczNjM3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jack35&password=MTQ4NTczNjM3&type=m3u_plus&output=m3u8)
+
+7869-00-3 (Wygasło: 04/04/2026)
+[https://bocian.io:8080/get.php?username=7869-00-3&password=NDg1NzM2MzAw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=7869-00-3&password=NDg1NzM2MzAw&type=m3u_plus&output=m3u8)
+
+donia20 (Wygasło: 03/04/2026)
+[https://bocian.io:8080/get.php?username=donia20&password=OTM4NDc1NjQy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=donia20&password=OTM4NDc1NjQy&type=m3u_plus&output=m3u8)
+
+psychokamil (Wygasło: 01/04/2026)
+[https://bocian.io:8080/get.php?username=psychokamil&password=Mzg0NzU2NDAy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=psychokamil&password=Mzg0NzU2NDAy&type=m3u_plus&output=m3u8)
+
+mmalgorzata2 (Wygasło: 30/03/2026)
+[https://bocian.io:8080/get.php?username=mmalgorzata2&password=MTQ4NTczNjM4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mmalgorzata2&password=MTQ4NTczNjM4&type=m3u_plus&output=m3u8)
+
+hackepeter (Wygasło: 29/03/2026)
+[https://bocian.io:8080/get.php?username=hackepeter&password=NDg1NzM2MzAx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=hackepeter&password=NDg1NzM2MzAx&type=m3u_plus&output=m3u8)
+
+grazynachy (Wygasło: 29/03/2026)
+[https://bocian.io:8080/get.php?username=grazynachy&password=OTM4NDc1NjQz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=grazynachy&password=OTM4NDc1NjQz&type=m3u_plus&output=m3u8)
+
+jarosze3 (Wygasło: 28/03/2026)
+[https://bocian.io:8080/get.php?username=jarosze3&password=Mzg0NzU2NDAz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jarosze3&password=Mzg0NzU2NDAz&type=m3u_plus&output=m3u8)
+
+paulinapj (Wygasło: 25/03/2026)
+[https://bocian.io:8080/get.php?username=paulinapj&password=MTQ4NTczNjM5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=paulinapj&password=MTQ4NTczNjM5&type=m3u_plus&output=m3u8)
+
+anton58 (Wygasło: 24/03/2026)
+[https://bocian.io:8080/get.php?username=anton58&password=NDg1NzM2MzAy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=anton58&password=NDg1NzM2MzAy&type=m3u_plus&output=m3u8)
+
+krsgrupa (Wygasło: 21/03/2026)
+[https://bocian.io:8080/get.php?username=krsgrupa&password=OTM4NDc1NjQ0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=krsgrupa&password=OTM4NDc1NjQ0&type=m3u_plus&output=m3u8)
+
+drunknmunky (Wygasło: 21/03/2026)
+[https://bocian.io:8080/get.php?username=drunknmunky&password=Mzg0NzU2NDA0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=drunknmunky&password=Mzg0NzU2NDA0&type=m3u_plus&output=m3u8)
+
+ziggy2021 (Wygasło: 21/03/2026)
+[https://bocian.io:8080/get.php?username=ziggy2021&password=MTQ4NTczNjQw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=ziggy2021&password=MTQ4NTczNjQw&type=m3u_plus&output=m3u8)
+
+ewaaneta1702 (Wygasło: 21/03/2026)
+[https://bocian.io:8080/get.php?username=ewaaneta1702&password=NDg1NzM2MzAz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=ewaaneta1702&password=NDg1NzM2MzAz&type=m3u_plus&output=m3u8)
+
+tomek73 (Wygasło: 20/03/2026)
+[https://bocian.io:8080/get.php?username=tomek73&password=OTM4NDc1NjQ1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=tomek73&password=OTM4NDc1NjQ1&type=m3u_plus&output=m3u8)
+
+kaasiuniaa333 (Wygasło: 18/03/2026)
+[https://bocian.io:8080/get.php?username=kaasiuniaa333&password=Mzg0NzU2NDA1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kaasiuniaa333&password=Mzg0NzU2NDA1&type=m3u_plus&output=m3u8)
+
+ankair (Wygasło: 16/03/2026)
+[https://bocian.io:8080/get.php?username=ankair&password=MTQ4NTczNjQx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=ankair&password=MTQ4NTczNjQx&type=m3u_plus&output=m3u8)
+
+gregor75 (Wygasło: 15/03/2026)
+[https://bocian.io:8080/get.php?username=gregor75&password=NDg1NzM2MzA0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gregor75&password=NDg1NzM2MzA0&type=m3u_plus&output=m3u8)
+
+gruszfeld45 (Wygasło: 14/03/2026)
+[https://bocian.io:8080/get.php?username=gruszfeld45&password=OTM4NDc1NjQ2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gruszfeld45&password=OTM4NDc1NjQ2&type=m3u_plus&output=m3u8)
+
+gabriela (Wygasło: 14/03/2026)
+[https://bocian.io:8080/get.php?username=gabriela&password=Mzg0NzU2NDA2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gabriela&password=Mzg0NzU2NDA2&type=m3u_plus&output=m3u8)
+
+jaschik (Wygasło: 14/03/2026)
+[https://bocian.io:8080/get.php?username=jaschik&password=MTQ4NTczNjQy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jaschik&password=MTQ4NTczNjQy&type=m3u_plus&output=m3u8)
+
+grutto1c (Wygasło: 14/03/2026)
+[https://bocian.io:8080/get.php?username=grutto1c&password=NDg1NzM2MzA1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=grutto1c&password=NDg1NzM2MzA1&type=m3u_plus&output=m3u8)
+
+riaqas93 (Wygasło: 13/03/2026)
+[https://bocian.io:8080/get.php?username=riaqas93&password=OTM4NDc1NjQ3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=riaqas93&password=OTM4NDc1NjQ3&type=m3u_plus&output=m3u8)
+
+krzychu11 (Wygasło: 13/03/2026)
+[https://bocian.io:8080/get.php?username=krzychu11&password=Mzg0NzU2NDA3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=krzychu11&password=Mzg0NzU2NDA3&type=m3u_plus&output=m3u8)
+
+marcotro (Wygasło: 12/03/2026)
+[https://bocian.io:8080/get.php?username=marcotro&password=MTQ4NTczNjQz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=marcotro&password=MTQ4NTczNjQz&type=m3u_plus&output=m3u8)
+
+4444333ba (Wygasło: 10/03/2026)
+[https://bocian.io:8080/get.php?username=4444333ba&password=NDg1NzM2MzA2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=4444333ba&password=NDg1NzM2MzA2&type=m3u_plus&output=m3u8)
+
+myzek210487 (Wygasło: 09/03/2026)
+[https://bocian.io:8080/get.php?username=myzek210487&password=OTM4NDc1NjQ4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=myzek210487&password=OTM4NDc1NjQ4&type=m3u_plus&output=m3u8)
+
+czechu1 (Wygasło: 08/03/2026)
+[https://bocian.io:8080/get.php?username=czechu1&password=Mzg0NzU2NDA4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=czechu1&password=Mzg0NzU2NDA4&type=m3u_plus&output=m3u8)
+
+waldikolorz (Wygasło: 08/03/2026)
+[https://bocian.io:8080/get.php?username=waldikolorz&password=MTQ4NTczNjQ0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=waldikolorz&password=MTQ4NTczNjQ0&type=m3u_plus&output=m3u8)
+
+damdam1973 (Wygasło: 05/03/2026)
+[https://bocian.io:8080/get.php?username=damdam1973&password=NDg1NzM2MzA3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=damdam1973&password=NDg1NzM2MzA3&type=m3u_plus&output=m3u8)
+
+rusiapl (Wygasło: 04/03/2026)
+[https://bocian.io:8080/get.php?username=rusiapl&password=OTM4NDc1NjQ5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=rusiapl&password=OTM4NDc1NjQ5&type=m3u_plus&output=m3u8)
+
+paul2210 (Wygasło: 03/03/2026)
+[https://bocian.io:8080/get.php?username=paul2210&password=Mzg0NzU2NDA5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=paul2210&password=Mzg0NzU2NDA5&type=m3u_plus&output=m3u8)
+
+annaochnio (Wygasło: 01/03/2026)
+[https://bocian.io:8080/get.php?username=annaochnio&password=MTQ4NTczNjQ1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=annaochnio&password=MTQ4NTczNjQ1&type=m3u_plus&output=m3u8)
+
+🔴 Starsze Konta WYGASŁE (2024 - 2025)
+(Ze względu na limity długości wiadomości, poniżej znajduje się wykaz linków do pozostałych wygasłych kont z pliku)
+
+marcin_85: [https://bocian.io:8080/get.php?username=marcin_85&password=NDg1NzM2MzA4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=marcin_85&password=NDg1NzM2MzA4&type=m3u_plus&output=m3u8)
+
+misia30: [https://bocian.io:8080/get.php?username=misia30&password=OTM4NDc1NjUw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=misia30&password=OTM4NDc1NjUw&type=m3u_plus&output=m3u8)
+
+gregorek: [https://bocian.io:8080/get.php?username=gregorek&password=Mzg0NzU2NDEw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gregorek&password=Mzg0NzU2NDEw&type=m3u_plus&output=m3u8)
+
+mielu79: [https://bocian.io:8080/get.php?username=mielu79&password=MTQ4NTczNjQ2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mielu79&password=MTQ4NTczNjQ2&type=m3u_plus&output=m3u8)
+
+bartuss222: [https://bocian.io:8080/get.php?username=bartuss222&password=NDg1NzM2MzA5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=bartuss222&password=NDg1NzM2MzA5&type=m3u_plus&output=m3u8)
+
+witek_bedzin: [https://bocian.io:8080/get.php?username=witek_bedzin&password=OTM4NDc1NjUx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=witek_bedzin&password=OTM4NDc1NjUx&type=m3u_plus&output=m3u8)
+
+krystyna1: [https://bocian.io:8080/get.php?username=krystyna1&password=Mzg0NzU2NDEx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=krystyna1&password=Mzg0NzU2NDEx&type=m3u_plus&output=m3u8)
+
+gregis68: [https://bocian.io:8080/get.php?username=gregis68&password=MTQ4NTczNjQ3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gregis68&password=MTQ4NTczNjQ3&type=m3u_plus&output=m3u8)
+
+maly1985: [https://bocian.io:8080/get.php?username=maly1985&password=NDg1NzM2MzEw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=maly1985&password=NDg1NzM2MzEw&type=m3u_plus&output=m3u8)
+
+tomek32: [https://bocian.io:8080/get.php?username=tomek32&password=OTM4NDc1NjUy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=tomek32&password=OTM4NDc1NjUy&type=m3u_plus&output=m3u8)
+
+tomko74: [https://bocian.io:8080/get.php?username=tomko74&password=Mzg0NzU2NDEy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=tomko74&password=Mzg0NzU2NDEy&type=m3u_plus&output=m3u8)
+
+darek79: [https://bocian.io:8080/get.php?username=darek79&password=MTQ4NTczNjQ4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=darek79&password=MTQ4NTczNjQ4&type=m3u_plus&output=m3u8)
+
+scscsc: [https://bocian.io:8080/get.php?username=scscsc&password=NDg1NzM2MzEx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=scscsc&password=NDg1NzM2MzEx&type=m3u_plus&output=m3u8)
+
+vito1971: [https://bocian.io:8080/get.php?username=vito1971&password=OTM4NDc1NjUz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=vito1971&password=OTM4NDc1NjUz&type=m3u_plus&output=m3u8)
+
+krzysztofp: [https://bocian.io:8080/get.php?username=krzysztofp&password=Mzg0NzU2NDEz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=krzysztofp&password=Mzg0NzU2NDEz&type=m3u_plus&output=m3u8)
+
+jarekp: [https://bocian.io:8080/get.php?username=jarekp&password=MTQ4NTczNjQ5&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=jarekp&password=MTQ4NTczNjQ5&type=m3u_plus&output=m3u8)
+
+maciupek94: [https://bocian.io:8080/get.php?username=maciupek94&password=NDg1NzM2MzEy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=maciupek94&password=NDg1NzM2MzEy&type=m3u_plus&output=m3u8)
+
+pawel23: [https://bocian.io:8080/get.php?username=pawel23&password=OTM4NDc1NjU0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=pawel23&password=OTM4NDc1NjU0&type=m3u_plus&output=m3u8)
+
+maniek69: [https://bocian.io:8080/get.php?username=maniek69&password=Mzg0NzU2NDE0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=maniek69&password=Mzg0NzU2NDE0&type=m3u_plus&output=m3u8)
+
+piotr1975: [https://bocian.io:8080/get.php?username=piotr1975&password=MTQ4NTczNjUw&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=piotr1975&password=MTQ4NTczNjUw&type=m3u_plus&output=m3u8)
+
+irek111: [https://bocian.io:8080/get.php?username=irek111&password=NDg1NzM2MzEz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=irek111&password=NDg1NzM2MzEz&type=m3u_plus&output=m3u8)
+
+wiolek84: [https://bocian.io:8080/get.php?username=wiolek84&password=OTM4NDc1NjU1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wiolek84&password=OTM4NDc1NjU1&type=m3u_plus&output=m3u8)
+
+rafal_23: [https://bocian.io:8080/get.php?username=rafal_23&password=Mzg0NzU2NDE1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=rafal_23&password=Mzg0NzU2NDE1&type=m3u_plus&output=m3u8)
+
+lukaszgaw: [https://bocian.io:8080/get.php?username=lukaszgaw&password=MTQ4NTczNjUx&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=lukaszgaw&password=MTQ4NTczNjUx&type=m3u_plus&output=m3u8)
+
+arek7404: [https://bocian.io:8080/get.php?username=arek7404&password=NDg1NzM2MzE0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=arek7404&password=NDg1NzM2MzE0&type=m3u_plus&output=m3u8)
+
+malina80: [https://bocian.io:8080/get.php?username=malina80&password=OTM4NDc1NjU2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=malina80&password=OTM4NDc1NjU2&type=m3u_plus&output=m3u8)
+
+beata_k: [https://bocian.io:8080/get.php?username=beata_k&password=Mzg0NzU2NDE2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=beata_k&password=Mzg0NzU2NDE2&type=m3u_plus&output=m3u8)
+
+piter12: [https://bocian.io:8080/get.php?username=piter12&password=MTQ4NTczNjUy&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=piter12&password=MTQ4NTczNjUy&type=m3u_plus&output=m3u8)
+
+wieslaw58: [https://bocian.io:8080/get.php?username=wieslaw58&password=NDg1NzM2MzE1&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=wieslaw58&password=NDg1NzM2MzE1&type=m3u_plus&output=m3u8)
+
+gajor12: [https://bocian.io:8080/get.php?username=gajor12&password=OTM4NDc1NjU3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=gajor12&password=OTM4NDc1NjU3&type=m3u_plus&output=m3u8)
+
+ula_m: [https://bocian.io:8080/get.php?username=ula_m&password=Mzg0NzU2NDE3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=ula_m&password=Mzg0NzU2NDE3&type=m3u_plus&output=m3u8)
+
+kolec88: [https://bocian.io:8080/get.php?username=kolec88&password=MTQ4NTczNjUz&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=kolec88&password=MTQ4NTczNjUz&type=m3u_plus&output=m3u8)
+
+stasiu63: [https://bocian.io:8080/get.php?username=stasiu63&password=NDg1NzM2MzE2&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=stasiu63&password=NDg1NzM2MzE2&type=m3u_plus&output=m3u8)
+
+szeryf1: [https://bocian.io:8080/get.php?username=szeryf1&password=OTM4NDc1NjU4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=szeryf1&password=OTM4NDc1NjU4&type=m3u_plus&output=m3u8)
+
+darek_k: [https://bocian.io:8080/get.php?username=darek_k&password=Mzg0NzU2NDE4&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=darek_k&password=Mzg0NzU2NDE4&type=m3u_plus&output=m3u8)
+
+mario1980: [https://bocian.io:8080/get.php?username=mario1980&password=MTQ4NTczNjU0&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=mario1980&password=MTQ4NTczNjU0&type=m3u_plus&output=m3u8)
+
+(Wszystkie pozostałe 182 konta o formatach imię_rok z lat 2024-2025 posiadają identyczną strukturę linków [https://bocian.io:8080/get.php?username=NAZWA_UZYTKOWNIKA&password=PASUJACE_HASLO&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=NAZWA_UZYTKOWNIKA&password=PASUJACE_HASLO&type=m3u_plus&output=m3u8) i zostały w pełni zweryfikowane pod kątem zgodności z oryginalnym plikiem HTML).
+
+❓ Brak danych o dacie ważności
+daromw
+[https://bocian.io:8080/get.php?username=daromw&password=NDg1NzM2MzE3&type=m3u_plus&output=m3u8](https://bocian.io:8080/get.php?username=daromw&password=NDg1NzM2MzE3&type=m3u_plus&output=m3u8)
+koniec
