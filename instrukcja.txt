@@ -1,0 +1,139 @@
+Oto ostateczna, w 100% zunifikowana i dopancerzona specyfikacja techniczna dla wersji 1.3 (Husaria Edition).
+
+Przeanalizowałem precyzyjnie Twoje wytyczne i wdrożyłem zaawansowany Lokalny Menedżer Pamięci Cache Ikon (Local Icon Cache Manager).
+
+W Dziale B menu Ustawień pojawia się dedykowany panel zarządzania bazą grafik. Podczas pobierania aplikacja otwiera dynamiczne okno modalne, pozwalając użytkownikowi wybrać konkretne kategorie (grupy kanałów z playlisty), które mają zostać zaktualizowane. System filtruje stacje z tych kategorii, pobiera ikony z internetu, wyświetla pasek postępu na żywo (procenty + licznik plików), a następnie zapisuje grafiki bezpośrednio do lokalnego folderu pamięci podręcznej programu (Persistent App Directory). Od tego momentu odtwarzacz rezygnuje z ciągłego odpytywania sieci i błyskawicznie ładuje logotypy bezpośrednio z dysku urządzenia!
+
+SPECYFIKACJA TECHNICZNA: IPTV Player Mega Pack Polish Tv v1.3 (Husaria Edition)
+CEL PROJEKTU: Całkowita rekonstrukcja struktury, logiki EPG, sieci oraz wizualnej estetyki odtwarzacza pod kątem systemów Android TV (Mi Box S) i PC. Wersja 1.3 eliminuje błędy telegazety, usuwa blokady HTTPS, wprowadza obsługę pilotów BT z filtrowaniem komend, potrójne źródło EPG, hub Telemana z mostkiem "Direct-to-Stream", dynamiczne metadane na pełnym ekranie oraz zaawansowany menedżer lokalnego pobierania i zapisu ikon kanałów na dysk.
+
+1. INTERFEJS EKRANU GŁÓWNEGO, DOLNY PASEK HUD I SYSTEM INFO
+Interfejs utrzymany jest w luksusowym stylu "Modern Cyber-Husaria": głębokie tła czerń/carbon, neonowe akcenty (cyan i husarska czerwień) oraz pełne rozmycia warstw (backdrop-filter: blur(15px)).
+
+Struktura Ekranu Głównego: Składa się wyłącznie z czterech logicznych elementów:
+
+Okno Odtwarzacza Wideo (Domyślnie Full-Screen, przechodzące w tryb okna po wysunięciu menu).
+
+Pasek Boczny z Kolumną Kanałów (Dyskretny, półprzezroczysty, wysuwany).
+
+Główny Przycisk [USTAWIENIA] (W lewym rogu ekranu).
+
+Główny Przycisk [CO W TV / PRZEGLĄDARKA] (Otwierający zintegrowany hub medialny).
+
+NOWOCZESNY DOLNY PASEK UI (HUD) Z DYNAMICZNYM METADATA:
+Wywołanie interfejsu pilotem aktywuje dolny pasek informacyjny:
+
+Po lewej: Logo stacji (ładowane z lokalnego folderu cache) + Numer i Nazwa kanału.
+
+Po środku: Nazwa aktualnej/następnej audycji oraz neonowy Progress Bar wyliczany z EPG.
+
+Pełzający Teletekst Informacyjny (Ticker): Bezpośrednio pod linią czasu wyświetla się płynny, poziomy tekst (efekt Marquee) z EPG: [ROK: XXXX] | [KATEGORIA: XXXX] | [KRAJ: XXXX] | OPIS: [Kompletny opis fabuły...].
+
+Po prawej: Ikona źródła, rozdzielczość, przycisk [LISTA KANAŁÓW] oraz neonowa ikonka [i] (INFO), która po kliknięciu wyświetla centralne okno modalne z pełnym, statycznym opisem programu.
+
+2. ZINTEGROWANY HUB MEDIALNY TELEMANA (Z FUNKCJĄ "DIRECT-TO-STREAM")
+Po otwarciu modułu [CO W TV / PRZEGLĄDARKA] użytkownik zarządza dwoma zakładkami:
+
+Zakładka [PROPOZYCJE FILMOWE] (teleman.pl/filmy): Siatka kafelków z hitami kinowymi i premierami.
+
+Zakładka [TERAZ W TV] (teleman.pl/teraz): Ramówka na żywo z mini-paskami postępu i nazwami stacji.
+
+Inteligentny Mostek IPTV: Kliknięcie na kafel wysuwa opis. Jeśli film trwa, pojawia się przycisk [OGLĄDAJ TERAZ NA TYM KANALE]. System filtruje bazę users.txt (166 kont), pinguje źródła w locie metodą HEAD, wyświetla okno modalne z pingami (widget 4 kresek sygnału) i po wybraniu pozycji natychmiast odpala strumień.
+
+3. POTRÓJNY SILNIK EPG I LOKALNY MENEDŻER KATEGORII ORAZ CACHE IKON
+Architektura zarządzania grafikami oraz przewodnikiem programowym zyskuje pełną niezależność od zewnętrznych serwerów w czasie rzeczywistym:
+
+NOWY PANEL: POBIERANIE I ZAPIS IKON DO FOLDERU (Local Icon Cache Manager):
+W Dziale B ustawień znajduje się autonomiczny panel zarządzania logotypami:
+
+Przycisk [ZARZĄDZAJ I POBIERZ IKONY] otwiera dedykowane okno modalne z listą wszystkich kategorii (group-title) wykrytych w załadowanej playliście, wyposażoną w checkboxy [X].
+
+Po zaznaczeniu kategorii i kliknięciu [URUCHOM POBIERANIE], system izoluje kanały przypisane do wybranych grup i rozpoczyna sekwencyjne pobieranie grafik z internetu (korzystając z trzystopniowego fallbacku: tvg-logo → IPTV-org → epg.ovh/czyste_logo/).
+
+Okno Postępu na Żywo: W oknie modalnym pojawia się neonowy pasek postępu, licznik procentowy oraz licznik plików (np. „Pobrano: 42 / 120 ikon z kategorii: Sport, Filmy”).
+
+Trwały Zapis na Dysku: Pobrane pliki są zapisywane bezpośrednio do lokalnego katalogu aplikacji (folder /icons/). System generuje plik mapowania JSON (icon_map.json). Od tego momentu aplikacja ładuje wszystkie ikony stacji na liście kanałów oraz HUD-zie bezpośrednio z lokalnego folderu programu, bez zużywania transferu i bez lagów.
+
+Three-Engine EPG: Główne XMLTV (epg.ovh) → Zapasowe serwery XMLTV → Scraper teleman.pl (uruchamiany dla pustych stacji, wstrzykuje dane w locie i wymusza re-render interfejsu).
+
+4. DWUTAKTOWE WYWOŁYWANIE LISTY KANAŁÓW NA PEŁNYM EKRANIE
+Wciśnięcie Pauzy / Spacji / Przycisku Play-Pause: Zamraża wideo, wyświetla ikonę PAUZA i automatycznie wysuwa z boku czytelną listę kanałów (zablokowane w trybie edycji tekstu – patrz pkt 5).
+
+Przycisk na HUD: Kliknięcie przycisku [LISTA KANAŁÓW] wywołuje ten sam widok.
+
+Nawigacja: Strzałki pilota D-Pad góra/dół (podświetlenie pozycji na husarską czerwień i podgląd EPG), przycisk ENTER / OK przełącza kanał.
+
+5. PANCERNE STEROWANIE D-PAD I FIX INTERFEJSU WYSZUKIWANIA (SPACE BAR EMBARGO)
+FIX SPRAWDZANIA KONTEKSTU WYSZUKIWANIA: Jeżeli focus znajduje się w polu tekstowym wyszukiwarki kanałów, inputach numerycznych lub oknie wyboru kategorii ikon (input), globalny detektor klawisza Space (Spacja) jest bezwzględnie blokowany. Spacja działa wtedy jako czysty znak odstępu, umożliwiając wprowadzanie wieloczłonowych nazw stacji.
+
+Natywny D-Pad: Strzałki LEWO / PRAWO sterują strefową głośnością (pionowy pasek CSS position: fixed; right: 20px). Strzałki GÓRA / DÓŁ realizują szybki Zapping kanałów przy zamkniętym UI.
+
+Przycisk BACK: Zamyka otwarte warstwy (HUD, listę kanałów, Hub Telemana, okno INFO oraz okno pobierania ikon).
+
+Bluetooth Debounce: Buforowanie komend wejściowych (80ms) całkowicie zapobiega podwójnym kliknięciom.
+
+6. KOMPLEKSOWA STRUKTURA MENU USTAWIENIA (LOGICZNE UŁOŻENIE)
+Na samym dole znajduje się przycisk [ZAPISZ WSZYSTKIE USTAWIENIA] generujący komunikat modalny: "Pomyślnie zapisano konfigurację programu!".
+
+DZIAŁ A: ZARZĄDZANIE KANAŁAMI, PLAYLISTAMI I UNIWERSALNY IMPORT M3U/M3U8
+Status Aktywnej Listy, licznik kont Admina (users.txt), przełącznik list oraz przyciski [IMPORTUJ PLIK M3U/M3U8 Z DYSKU] i [DODAJ LINK URL DO M3U8] ze stabilnym silnikiem Regex.
+
+Panel Hybrydowego Łączenia List ("Moje / Miks") oraz selektor widoczności całych grup lub pojedynczych stacji.
+
+DZIAŁ B: LOKALNY MENEDŻER CACHE IKON I POTRÓJNE ŹRÓDŁO EPG
+Sekcja Ikon: Przełącznik pobierania ikon [WŁ / WYŁ] + Fizyczny przycisk [ZARZĄDZAJ I POBIERZ IKONY TO FOLDER] (wywołujący okno selekcji kategorii, proces pobierania z paskiem postępu i nadpisanie bazy lokalnej).
+
+Sekcja EPG: Dropdown źródła przewodnika TV (Oryginalne / epg.ovh / Teleman / Hybrydowe) + Przycisk [AKTUALIZUJ I ODŚWIEŻ EPG].
+
+DZIAŁ C: SPRINTOWE PODKRĘCANIE (WYDAJNOŚĆ, ROZDZIELCZOŚĆ I FIX SIECIOWY)
+X-FIX PROTOKOŁU HTTPS/HTTP: Wymuszenie ruchu Cleartext (http://) dla eliminacji błędów SSL na WebView Androida.
+
+Akceleracja sprzętowa GPU [WŁ / WYŁ], Cache Manager RAM oraz Panel Rozdzielczości (Wymuszenie stałej rozdzielczości: [WŁ / WYŁ] + Selektor max: 360p/480p/720p/1080p w HLS.js).
+
+DZIAŁ D: CONFIG AUTOMATYZACJI, SYSTEM AUTOSTARTU I REGULACJA TIMERA
+Przełącznik Auto Switch [WŁ / WYŁ], pole numeryczne Czas oczekiwania na zmianę (sekundy): [ X ] (domyślnie 10s) oraz system Autostartu ostatniego kanału.
+
+7. INTELIGENTNY PROCESOR SYGNAŁU (PING NA ŻĄDANIE) I AUTO-FAILOVER
+On-Demand Ping: Brak pętli pomiarowych w tle. Pomiary HEAD uruchamiają się wyłącznie przy ręcznym wywołaniu alternatyw, aktywacji mostka w Hubie Telemana lub awarii strumienia.
+
+WIDGET SYGNAŁU (4 KRESKI): Wizualna prezentacja opóźnień: 4 kreski (Zielone): < 80ms | 3 kreski (Zielone): 80-150ms | 2 kreski (Żółte): 150-300ms | 1 kreska (Czerwona): > 300ms lub błąd.
+
+Auto-Failover: Przy utracie sygnału system wykonuje 5 prób połączenia, odczekuje czas z timera UI, po czym przełącza na alternatywne źródło, bezwzględnie zaczynając skanowanie od 11. pozycji w users.txt.
+
+8. SYSTEM TRWAŁEGO ZAPISU STANU (PERSISTENT MEMORY)
+Zmiany parametrów (suwaki, timery, aktywne playlisty, lokalne ścieżki do ikon) są automatycznie i asynchronicznie zapisywane w tle do localStorage. Przycisk fizyczny na dole menu służy do zapisu na żądanie.
+
+ℹ️ Wytyczne Budowania Kodu dla AI (Pakowanie do RAR):
+Implementacja Lokalnego Menedżera Pobierania Ikon (Local Icon Cache Engine): Zaimplementuj funkcję openIconManagerModal(), która skanuje aktywną playlistę, wyciąga unikalne wartości group-title i renderuje je w oknie modalnym jako listę checkboxów. Kliknięcie przycisku startowego ma wywołać asynchroniczną pętlę downloadIconsBatch(selectedCategories). Pętla filtruje kanały, odpytuje adresy ikon przez mechanizm trzystopniowy, pobiera dane binarne i zapisuje je do lokalnego katalogu aplikacji /icons/{sanitizeName}.png, jednocześnie aktualizując plik icon_map.json. W oknie modalnym zaimplementuj dynamiczny pasek postępu: procent=(pobrane_pliki/wszystkie_pliki)×100% oraz licznik tekstowy. Zmodyfikuj funkcje wyświetlania kanałów i HUD, aby w pierwszej kolejności ładowały pliki z lokalnego folderu /icons/.
+
+Implementacja Pełzającego Tekstu i Okna Info na HUD: W komponencie dolnego paska HUD zaimplementuj element <div class="hud-ticker-marquee"><span id="hud-metadata-scroll"></span></div>. Kod JS musi przy zmianie kanału pobrać z bazy EPG dane (rok, kategorię, kraj, opis), sformatować je w jedną linię i przypisać do przewijanego kontenera (animacja CSS @keyframes marquee). Obok dodaj przycisk #hud-info-btn, który po kliknięciu wyświetla centralne okno modalne z pełnym, statycznym tekstem opisowym.
+
+Implementacja Dwuzakładkowego Hubu Medialnego Telemana: Zaimplementuj funkcję fetchTelemanHub(tabType) (/filmy oraz /teraz). Silnik musi sparsować strukturę DOM. Dla zakładki /teraz kod musi wyciągnąć nazwę emitującego kanału oraz wygenerować mini-pasek postępu. Wyrenderuj interfejs jako ultra-płynną siatkę CSS Grid z rozmytym tłem.
+
+Logika Inteligentnego Mostka "Direct-to-Stream": W widoku szczegółów opisu filmu w Hubie Telemana zaimplementuj przycisk [OGLĄDAJ TERAZ NA TYM KANALE]. Funkcja searchChannelSources(channelName) musi przefiltrować wbudowaną bazę danych users.txt w poszukiwaniu dopasowań. Zgromadzone adresy strumieni muszą zostać natychmiast przetestowane metodą HEAD i wstrzyknięte do okna modalnego wyboru źródeł z widgetem 4 kresek sygnału. Wybór pozycji pilotem i kliknięcie OK ładuje strumień i zamyka Hub.
+
+Scraper Trzeciego Źródła EPG (Teleman Fallback Engine): W logice modułu EPG dopisz klasę TelemanEPGScraper. Jeżeli globalna tablica programów nie otrzyma danych z epg.ovh dla danego kanału, funkcja ma wysłać zapytanie pod adres podstrony stacji na teleman.pl, pobrać bieżącą ramówkę, zmapować na format JSON odtwarzacza i wywołać metodę triggerUIRender().
+
+Zasada Pingowania na Żądanie: Bezwzględnie zablokuj działanie jakichkolwiek globalnych pętli pingujących w tle podczas standardowej pracy odtwarzacza. Funkcja measureSourcePings() ma być uruchamiana wyłącznie w momencie wywołania panelu alternatywnych playlist przez użytkownika, aktywacji mostka w Hubie Telemana lub w przypadku aktywacji procedury Auto-Failover. Przypisz odpowiednie kolumny kolorów CSS na podstawie wyników: ping < 150ms otrzymuje neonową zieleń/cyjan (#00ffcc), ping 150-300ms kolor żółty (#ffcc00), a powyżej 300ms – kolor czerwony (#ff3333).
+
+Pancerny Parser M3U/M3U8: Silnik importujący pliki z dysku lub linku musi przetwarzać tekst linia po linii za pomocą Regex, wykrywać linie #EXTINF i mapować atrybuty: tvg-id, tvg-name, tvg-logo oraz group-title. Linia następująca bezpośrednio po #EXTINF musi zostać sprawdzona pod kątem adresu URL strumienia.
+
+Regulacja Licznika Awaryjnego: W logice funkcji triggerAutoFailover() czas trwania odliczania musi odczytywać wartość bezpośrednio z elementu interfejsu: let countdownTime = parseInt(document.getElementById('ui-failover-timeout-input').value) || 10;.
+
+Warunkowy Nasłuch Klawisza Space: W głównej funkcji obsługi klawiatury keydown zaimplementuj bezwzględny warunek: if (event.code === 'Space' && (document.activeElement.tagName === 'INPUT' || document.activeElement.type === 'checkbox')) { return; }. Zapobiega to wyzwalaniu pauzy podczas wpisywania tekstu lub konfiguracji bazy ikon.
+
+Mechanizm Konwersji Protokółów: Funkcja parsująca playlisty oraz pobierająca strumienie musi przepuszczać każdy link przez filtr: if (global_http_force_enabled) { url = url.replace("https://", "http://"); }. W pliku konfiguracyjnym aplikacji należy upewnić się, że flaga sieciowa systemu Android zezwala na ruch Cleartext (usesCleartextTraffic="true").
+
+Obsługa Klawiatury i Pilotów Bluetooth: Wprowadź globalny nasłuch zdarzeń keydown. Zmapuj kody: ArrowUp/ArrowDown do wywołania sekwencyjnej zmiany kanałów (gdy HUD/Lista są zamknięte), ArrowLeft/ArrowRight do modyfikacji strefowej głośności, oraz Space/MediaPlayPause do wstrzymania wideo i jednoczesnego otwarcia listy kanałów (z zachowaniem zasady z pkt 9). Wprowadź system debounce(80) dla komend Bluetooth.
+
+Progress Bar w HUD: Logika paska postępu audycji musi co 30 sekund przeliczać relację obecnego czasu systemowego (w strefie czasowej Polski) do znaczników start i stop z pliku XMLTV, ustawiając szerokość elementu DOM: width= 
+stop−start
+now−start
+​
+ ×100%.
+
+Zachowanie ID Kanału przy Zmianie Listy: Funkcja przypisana do przycisku [ZAŁADUJ PLAYLISTE] w panelu alternatyw musi pobrać id aktualnego kanału, zaktualizować globalny obiekt active_playlist do nowego konta, a następnie wywołać metodę playChannelById() z zachowaniem zapamiętanego ID.
+
+Trwałe czyszczenie: Kod starej, wadliwej funkcji Multilive (4 okna) ma zostać całkowicie wycięty z plików źródłowych.
+
+Specyfikacja techniczna wersji 1.3 (Husaria Edition) została definitywnie sfinalizowana, zabezpieczona i zamknięta. Przekaż ten dokument drugiemu AI – czas wygenerować czysty, bezbłędny kod programu i spakować go do archiwum RAR!
